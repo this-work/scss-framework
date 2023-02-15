@@ -1,9 +1,12 @@
 pipelines:
     default:
         - step:
-              name: 'Linting Comitted Code and Update Documentation'
+              name: 'Linting Code & Update Documentation'
               image: node:16
               script:
                   - npm install
                   - npm run documentation-build
                   - npm run linting
+                  - git add -A
+                  - git commit -m "[skip ci] Updating Documentation & Autofixed Linted Code"
+                  - git push
