@@ -1,18 +1,9 @@
 pipelines:
     default:
         - step:
-              name: 'Update Documentation'
+              name: 'Linting Comitted Code and Update Documentation'
               image: node:16
               script:
                   - npm install
                   - npm run documentation-build
-              artifacts:
-                  - node_modules
-                  - documentation
-        - step:
-              name: 'Linting Comitted Code'
-              image: node:16
-              script:
                   - npm run linting
-              caches:
-                  - node
