@@ -1,0 +1,11 @@
+{
+    "extends": [
+        "stylelint-config-standard-scss",
+        "stylelint-config-property-sort-order-smacss"
+    ],
+	"rules": {
+		"no-empty-source": true,
+        "property-no-unknown": true,
+		"block-no-empty": true
+	}
+}

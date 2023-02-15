@@ -1,0 +1,45 @@
+////
+///
+/// Conversion Libary
+///
+/// @group Core
+///
+////
+
+///
+/// Default unit type. Defined the unit output for all mixins and functions.
+///
+/// `absolute` - All Outputs are in an absolute unit type (px) or rather the orginal value.
+///
+/// `relative` - All Outputs are in an relative unit type (rem) when the orginal value are PX values.
+///
+/// @type string
+///
+$default-unit-type: "absolute" !default;
+
+///
+/// Default conversion context. Used for from and to rem calculation.
+/// @type number
+///
+$default-conversion-context: 16px !default;
+
+///
+/// Strips the unit from a given number
+///
+/// @param {number} $number [] - [`required`] Number to remove unit from
+///
+/// @return {number} - Unitless number
+///
+@function strip-unit($number) {
+    @if type-of($number) == "number" and not unitless($number) {
+        $pseudo-divider: ($number * 0 + 1);
+        @return calc($number / $pseudo-divider);
+    }
+
+    @return $number;
+}
+
+.test {
+    font-size: 16px;
+    display: block;
+}
