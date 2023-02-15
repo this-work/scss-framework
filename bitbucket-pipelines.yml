@@ -1,18 +1,9 @@
 pipelines:
     default:
         - step:
-              name: 'Update Documentation'
+              name: 'Check Commit'
               image: node:16
               script:
                   - npm install
                   - npm run documentation-build
-              artifacts:
-                  - node_modules
-                  - documentation
-        - step:
-              name: 'Linting'
-              image: node:16
-              script:
                   - npm run linting
-              caches:
-                  - node
