@@ -13,13 +13,8 @@ pipelines:
         - step:
               name: 'Commit Code Changes'
               image: node:16
-              condition:
-                  changesets:
-                      includePaths:
-                          - "documentation/**"
-                          - "src/**"
               script:
                   - git remote set-url origin https://thiswoestmann:${APP_SECRET}@bitbucket.org/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}
-                  - git add -A
-                  - git commit -m "[skip ci] Updating Documentation & Autofixed Linted Code"
-                  - git push
+                  - git ls-files --modified | xargs git add -A
+                  - git ls-files --modified | xargs git commit -m "[skip ci] Updating Documentation & Autofixed Linted Code"
+                  - git ls-files --modified | xargs git push
