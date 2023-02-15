@@ -33,13 +33,17 @@ $default-conversion-context: 16px !default;
 @function strip-unit($number) {
     @if type-of($number) == "number" and not unitless($number) {
         $pseudo-divider: ($number * 0 + 1);
+
         @return calc($number / $pseudo-divider);
     }
 
     @return $number;
 }
 
-.test {
+
+
+
+.test{
     display: block;
     top: 0;
     color: fuchsia;
