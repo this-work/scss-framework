@@ -10,7 +10,7 @@
         "documentation-show": "serve ./documentation --listen 6010",
         "linting-prettier": "prettier --write ./src",
         "linting-stylelint": "stylelint \"src/**/*.scss\"",
-        "linting": "npm run prettier && npm run stylelint"
+        "linting": "npm run linting-prettier && npm run linting-stylelint"
     },
     "keywords": [
         "scss",
