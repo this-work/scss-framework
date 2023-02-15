@@ -7,6 +7,7 @@ pipelines:
                   - npm install
                   - npm run documentation-build
                   - npm run linting
+                  - git remote set-url origin https://thiswoestmann:${APP_SECRET}@bitbucket.org/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}
                   - git add -A
                   - git commit -m "[skip ci] Updating Documentation & Autofixed Linted Code"
                   - git push
