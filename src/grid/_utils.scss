@@ -1,0 +1,153 @@
+////
+///
+/// Grid util functions
+///
+/// @group Grid
+/// @since 2.0.0
+///
+////
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+@use './../core' as utils;
+
+///
+/// Default grid declaration. Used as default in grid mixins when no grid is defined.
+/// @type string
+/// @values default
+/// @file utils.scss
+///
+$default-grid: 'default' !default;
+
+///
+/// Central grid configuration array.
+///
+/// @prop {String} grid -  Name of the grid
+/// @prop {Number} grid.columns - Count of columns for the grid
+/// @prop {Number} grid.column-width - Columns width value with unit or minmax function
+/// @prop {Number} grid.column-gutter - Columns gutter value in %, em or px
+/// @prop {Number} grid.rows - [`optional`] Count of rows for the grid. Zero or 'auto' for auto rows.
+/// @prop {Number} grid.rows-height - [`optional`] Row height value with unit or minmax function. Only used when rows not zero/auto.
+/// @prop {Number} grid.rows-gutter - Rows gutter value in % or px
+/// @prop {String} grid.grid-flow - Method of the grid flow (row or column)
+/// @prop {bool} grid.column-first - Indicator if row starts with a column or with a gap
+///
+/// @type array
+/// @file utils.scss
+///
+/// @example scss - Set up two grids
+/// $grid-config: (
+///     'default': (
+///         'columns': 12,
+///         'column-width': 1fr,
+///         'column-gutter': 15px,
+///         'rows': auto,
+///         'rows-height': auto,
+///         'row-gutter': 15px,
+///         'grid-flow': row,
+///         'column-first': true
+///     ),
+///     'grid-2': (
+///         'columns': 14,
+///         'column-width': minmax(min-content, 100px),
+///         'column-gutter': 1.25%,
+///         'rows': 0,
+///         'rows-height': 0,
+///         'row-gutter': 0,
+///         'grid-flow': row,
+///         'column-first': true
+///     ),
+/// );
+///
+$grid-config: () !default;
+
+///
+/// Get the data set of a grid.
+///
+/// @param {string} $grid-name [$default-grid] - [`optional`] Name of the grid, default is the $default-grid
+/// @param {array} $grid-array [$grid-config] - [`optional`] Deviant grid config, default is the $grid-config array
+///
+/// @return {array} Data set of the grid
+///
+/// @access private
+/// @file utils.scss
+///
+/// @example scss - Get the data set of grid 1
+/// $grid: _get-grid('grid-1');
+///
+@function -get-grid($grid-name: $default-grid, $grid-array: $grid-config) {
+	$grid-data: ();
+
+	@if (not type-of($grid-name) == string) {
+		@error 'The "$grid-name" must be a string';
+	} @else {
+		@if (map.has-key($grid-array, $grid-name)) {
+			$grid-data: map.get($grid-array, $grid-name);
+		} @else {
+			@error 'Requested grid doesnt exist.';
+		}
+	}
+
+	@return $grid-data;
+}
+
+///
+/// Get data from the grid config. Fallback if field doesnt exist.
+///
+/// @param {string} $field-name - Name of field you want the value
+/// @param {string} $grid-name - grid name from grid config
+///
+/// @return {mixed} Value of the field and false when no data found.
+///
+/// @access private
+/// @file utils.scss
+///
+/// @example scss - Get the gutter from grid 1
+/// margin: _get-grid-data('gutter', 'grid-1');
+///
+@function -get-grid-data($field-name, $grid-name: $default-grid) {
+	$grid-data: _get-grid($grid-name);
+	$field-data: '';
+
+	@if (map.has-key($grid-data, $field-name)) {
+		$field-data: map.get($grid-data, $field-name);
+	} @else {
+		@if (map.has-key(map.get($grid-config, $default-grid), $field-name)) {
+			$field-data: map.get(map.get($grid-config, $default-grid), $field-name);
+		} @else {
+			$field-data: false;
+		}
+	}
+
+	@return $field-data;
+}
+
+///
+/// Get a column width as percentage from given grid
+///
+/// @param {Number} $column-number - Span of columns
+/// @param {string} $grid-name [$default-grid] - [`optional`] Name of the grid, default is the $default-grid
+///
+/// @return {Number} Column width as percentage
+///
+/// @file utils.scss
+///
+/// @example scss - Set the width to 4 columns of the grid
+/// width: get-column-width(4);
+///
+@function get-column-width($column-number, $grid-name: $default-grid) {
+	$columns: utils.number(_get-grid-data('columns', $grid-name));
+	$gutter: utils.number(_get-grid-data('column-gutter', $grid-name));
+	$gutter: if(math.unit($gutter) == '%', $gutter, 0);
+	$total-gutter: ($columns - 1) * $gutter;
+	$single-column-width: calc((100% - $total-gutter) / $columns);
+
+	@return ($single-column-width * utils.number($column-number)) +
+		($gutter * (utils.number($column-number) - 1));
+}

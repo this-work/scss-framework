@@ -1,41 +1,45 @@
 {
-    "name": "@this/scss-framework",
-    "version": "6.0.0",
-    "author": "THIS GmbH",
-    "homepage": "https://bitbucket.org/this-work/scss-framework/src/master/README.md",
-    "description": "THIS SCSS Framework",
-    "private": false,
-    "scripts": {
-        "documentation-build": "sassdoc ./src -d documentation",
-        "documentation-show": "serve ./documentation --listen 6010",
-        "linting-prettier": "prettier --write ./src",
-        "linting-stylelint": "stylelint \"src/**/*.scss\"",
-        "linting": "npm run linting-prettier && npm run linting-stylelint"
-    },
-    "keywords": [
-        "scss",
-        "sass",
-        "css",
-        "frontend",
-        "framework"
-    ],
-    "files": [],
-    "repository": {
-        "type": "git",
-        "url": "git@bitbucket.org:this-work/scss-framework.git"
-    },
-    "bugs": {
-        "url": "https://bitbucket.org/this-work/scss-framework"
-    },
-    "peerDependencies": {
-        "sass": "^1.58.1"
-    },
-    "devDependencies": {
-        "prettier": "2.8.4",
-        "sassdoc": "^2.7.4",
-        "serve": "^14.2.0",
-        "stylelint": "^15.1.0",
-        "stylelint-config-property-sort-order-smacss": "Th3S4mur41/stylelint-config-property-sort-order-smacss",
-        "stylelint-config-standard-scss": "^7.0.1"
-    }
+	"name": "@this/scss-framework",
+	"version": "6.0.0",
+	"author": "THIS GmbH",
+	"homepage": "https://bitbucket.org/this-work/scss-framework/src/master/README.md",
+	"description": "THIS SCSS Framework",
+	"private": false,
+	"scripts": {
+		"documentation-build": "sassdoc ./src",
+		"documentation-show": "serve ./documentation --listen 6010",
+		"test-framework": "sass test/test.scss test/dist/stylesheet.css --no-source-map",
+		"linting-prettier": "prettier --write ./src",
+		"linting-stylelint": "stylelint \"src/**/*.scss\"",
+		"linting": "npm run linting-prettier && npm run linting-stylelint"
+	},
+	"keywords": [
+		"scss",
+		"sass",
+		"css",
+		"frontend",
+		"framework"
+	],
+	"files": [],
+	"repository": {
+		"type": "git",
+		"url": "git@bitbucket.org:this-work/scss-framework.git"
+	},
+	"bugs": {
+		"url": "https://bitbucket.org/this-work/scss-framework"
+	},
+	"peerDependencies": {
+		"sass": "^1.58.1"
+	},
+	"devDependencies": {
+		"handlebars": "^4.7.7",
+		"prettier": "^2.8.4",
+		"sassdoc": "^2.7.4",
+		"sassdoc-theme-documentation-theme": "file:documentation-theme",
+		"serve": "^14.2.0",
+		"stylelint": "^15.1.0",
+		"stylelint-config-property-sort-order-smacss": "^9.1.0",
+		"stylelint-config-standard-scss": "^7.0.1",
+		"themeleon": "^3.0.2"
+	}
 }

@@ -1,0 +1,33 @@
+@use '../framework' as * with (
+	$default-unit-type: 'relative',
+	$color-base: (
+		'black': #00ff00,
+	),
+	$breakpoint-config: (
+		's': 700px,
+		'xl': 1000px,
+		'xxl': 1600px,
+		'xxxl': 1800px,
+	),
+	$site-area-ratios: (
+		'default': (
+			'viewport': 0,
+			'page': 20px,
+			'content': 1fr,
+		),
+		'xl': (
+			'viewport': 100px,
+			'page': 500px,
+			'content': 1200px,
+		),
+	)
+);
+
+body {
+	background: color('black');
+	font-size: unitize(16px);
+}
+
+.module {
+	@include site-area-grid;
+}

@@ -1,0 +1,10 @@
+dest: ./documentation
+theme: documentation-theme
+groups:
+  Public API:
+    api-colors: Color Palettes
+    api-fonts: Font Specimens
+    api-scale: Ratios & Sizes
+  Design Tokens:
+    core: Core Things
+    config-fonts: _Fonts

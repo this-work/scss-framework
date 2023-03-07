@@ -1,0 +1,103 @@
+////
+///
+/// Breakpoint functions
+///
+/// @group View
+/// @since 2.0.0
+///
+////
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+@use './../core' as utils;
+
+///
+/// Associate breakpoint array.
+/// Includes a key/value pair of the breakpoints
+///
+/// @prop {string} name -  Name/Key of the breakpoint
+/// @prop {number} number -  Breakpoint width/value
+///
+/// @type array
+/// @file breakpoints.scss
+///
+/// @example scss - Set two breakpoints
+///  $breakpoint-config (
+///     'xl' : 1000px,
+///     'xxl' : 1600px
+///  );
+///
+$breakpoint-config: () !default;
+
+///
+/// Get a breakpoint from breakpoint configuration.
+///
+/// @param {string|number} $breakpoint - [`required`] Name of the breakpoint or a number value
+/// @param {array} $breakpoint-map [$breakpoint-config] - [`optional`] Breakpoint array
+/// @return {number} Breakpoint
+///
+/// @file breakpoints.scss
+///
+/// @example scss - Set max-width to the xl breakpoint
+/// max-width: get-breakpoint('xl');
+///
+@function get-breakpoint($breakpoint, $breakpoint-map: $breakpoint-config) {
+	@if ($breakpoint == 'default') {
+		// stylelint-disable-next-line
+		$breakpoint: 0px;
+	}
+	@if (type-of($breakpoint) == string) {
+		@if (not map.has-key($breakpoint-map, $breakpoint)) {
+			@error 'Given breakpoint map has no breakpoint named "#{$breakpoint}".';
+		}
+		@return map.get($breakpoint-map, $breakpoint);
+	}
+	@return $breakpoint;
+}
+
+///
+/// Sort the given map by size of the breakpoint config values of the key and resolved all keys.
+/// The key can be a normal number too.
+///
+/// @param {array} $breakpointMap - [`required`] Map with breakpoint as keys. Can be a number or a breakpoint config name
+/// @return {array} Sorted and resolved breakpoint map with given values
+///
+/// @file breakpoints.scss
+///
+/// @example scss - Sort the given map by Size of the breakpoint config values of the key.
+/// 	$sorted-map: sort-by-breakpoint-size((
+///			'default': 'Example 1',
+///			'xxl': 'Example 3 should be the last',
+///			'xl': 'Example 2 should be the second',
+///		));
+///
+@function sort-by-breakpoint-size($breakpoint-map) {
+	$solved-breakpoint-map: ();
+	@each $breakpoint, $value in $breakpoint-map {
+		$solved-breakpoint: get-breakpoint($breakpoint);
+		$solved-breakpoint-map: map.merge(
+			$solved-breakpoint-map,
+			(
+				$breakpoint: $solved-breakpoint,
+			)
+		);
+	}
+
+	$sorted-breakpoint-map: ();
+	@each $breakpoint, $value in utils.sort-values($solved-breakpoint-map) {
+		$sorted-breakpoint-map: map.merge(
+			$sorted-breakpoint-map,
+			(
+				$value: map.get($breakpoint-map, $breakpoint),
+			)
+		);
+	}
+
+	@return $sorted-breakpoint-map;
+}

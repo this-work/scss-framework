@@ -1,0 +1,60 @@
+////
+///
+/// Page functions
+///
+/// @group View
+/// @since 2.3.0
+///
+////
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+///
+/// Max width of the page for calculations in px
+///
+/// @type number
+/// @file site.scss
+///
+$max-page-width: 1920px !default;
+
+///
+/// Random basic width of the content area for calculations in px
+///
+/// @type number
+/// @file site.scss
+///
+$basic-content-width: 1080px !default;
+
+///
+/// Mixin to generate Styles for the RTL direction
+/// Needs for usage a 'dir' attribute on a parent node
+///
+/// @content Styles for only the RTL direction
+///
+/// @file site.scss
+///
+@mixin rtl() {
+	@at-root [dir='rtl'] & {
+		@content;
+	}
+}
+
+///
+/// Mixin to generate Styles for the LTR direction
+/// Works with and without 'dir' attribute
+///
+/// @content Styles for the LTR direction
+///
+/// @file site.scss
+///
+@mixin ltr() {
+	@at-root html:not([dir='rtl']) & {
+		@content;
+	}
+}

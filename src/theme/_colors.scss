@@ -1,0 +1,70 @@
+////
+///
+/// Color functions
+///
+/// @group Colors
+/// @since 2.0.0
+///
+////
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+///
+/// Associate base color array.
+/// Includes a key/value pair of the color to increase the consistency.
+///
+/// @prop {String} name -  Name of the color
+/// @prop {Number} hex -  Hexcode of the color
+///
+/// @type array
+/// @example scss - Set two colors
+///  $color-base (
+///     'color-1' : #000000,
+///     'color-2' : #FFFFFF
+///  );
+///
+$color-base: () !default;
+
+///
+/// Associate color derivate array.
+/// Includes a key/value pair of the color to increase the consistency.
+///
+/// @prop {String} name -  Name of the color
+/// @prop {Number} hex -  Hexcode of the color
+///
+/// @type array
+/// @example scss - Set two colors
+///  $color-derivates (
+///     'color-1' : #000000,
+///     'color-2' : #FFFFFF
+///  );
+///
+$color-derivates: () !default;
+
+///
+/// Get the entry from color array as hexcode
+///
+/// @param {string} $color-name - Name of the color
+/// @param {array} $color-map [$default-color-map] - [`optional`] color array
+///
+/// @return {string} Hexcode
+///
+/// @example scss - Set the css color to 'color-1'
+/// color: color('color-1');
+///
+@function color(
+	$color-name,
+	$color-map: map.merge($color-base, $color-derivates)
+) {
+	@if (not map.has-key($color-map, $color-name)) {
+		@error 'Given color map has no color named "#{$color-name}".';
+	}
+
+	@return map.get($color-map, $color-name);
+}

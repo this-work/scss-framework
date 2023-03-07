@@ -1,0 +1,118 @@
+////
+///
+/// Unit Conversion functions
+///
+/// @group Utils
+/// @since 1.0.0
+///
+////
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+@use 'utils' as *;
+
+///
+/// Default unit type. Defined the unit output for all mixins and functions.
+///
+/// @values `absolute` - All Outputs are in an absolute unit type (px) or rather the orginal value.
+/// @values `relative` - All Outputs are in an relative unit type (rem) when the orginal value are PX values.
+///
+/// @type string
+/// @file conversion.scss
+///
+$default-unit-type: 'absolute' !default;
+
+///
+/// Default conversion context. Used for from and to rem calculation.
+/// @type number
+///
+$default-conversion-context: 16px !default;
+
+///
+/// Strips the unit from a given number
+///
+/// @param {number} $number - [`required`] Number to remove unit from
+/// @return {number} - Unitless number
+///
+/// @file conversion.scss
+///
+@function strip-unit($number) {
+	@if type-of($number) == 'number' and not unitless($number) {
+		$pseudo-divider: ($number * 0 + 1);
+		@return calc($number / $pseudo-divider);
+	}
+
+	@return $number;
+}
+
+///
+/// Converts `px` to `em`
+///
+/// @param {number} $px - [`required`] px value to convert
+/// @param {number} $context [$default-conversion-context] - [`optional`] conversion context
+/// @returns {number} - the `px` value converted to `em`
+///
+/// @file conversion.scss
+///
+@function em($px, $context: $default-conversion-context) {
+	@return calc(strip-unit($px) / strip-unit($context)) * 1em;
+}
+
+///
+/// Converts `px` to `rem`
+///
+/// @param {number} $px - [`required`] px value to convert
+/// @param {number} $context [$default-conversion-context] - [`optional`] conversion context
+/// @returns {number} - the `px` value converted to `rem`
+///
+/// @file conversion.scss
+///
+@function rem($px, $context: $default-conversion-context) {
+	@return calc(strip-unit($px) / strip-unit($context)) * 1rem;
+}
+
+///
+/// Converts `rem` | `em` to `px`
+///
+/// @param {number} $r-em - [`required`] rem | em value to convert
+/// @param {number} $context [$default-conversion-context] - [`optional`] conversion context
+/// @returns {number} - the `rem` | `em` value converted to `px`
+///
+/// @file conversion.scss
+///
+@function px($r-em, $context: $default-conversion-context) {
+	@return calc(strip-unit($r-em) * strip-unit($context)) * 1px;
+}
+
+///
+/// Converts Unit to given unit type
+///
+/// @param {number} $value - [`required`] Value to convert
+/// @param {string} $unit-type [$default-unit-type] - [`optional`] Type of font unit (See $default-unit-type)
+/// @returns {number} - the converted value
+///
+/// @file conversion.scss
+///
+@function unitize($value, $unit-type: $default-unit-type) {
+	$value: number(#{$value});
+
+	@if ($unit-type == 'relative' and unit($value) == 'px') {
+		$value: rem($value);
+	}
+
+	@if ($unit-type == 'absolute' and unit($value) == 'rem') {
+		$value: px($value);
+	}
+
+	@if ($unit-type == 'absolute' and unit($value) == 'em') {
+		$value: px($value);
+	}
+
+	@return $value;
+}

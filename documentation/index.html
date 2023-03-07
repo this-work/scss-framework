@@ -1,10 +1,410 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>@this/scss-framework - v6.0.0</title><link rel="stylesheet" href="assets/css/main.css"><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,700" rel="stylesheet" type="text/css"><meta name="viewport" content="width=device-width"><meta content="IE=edge, chrome=1" http-equiv="X-UA-Compatible"><!-- Open Graph tags --><meta property="og:title" content="@this/scss-framework - SassDoc"><meta property="og:type" content="website"><meta property="og:description" content="<p>THIS SCSS Framework</p>
-"><!-- Thanks to Sass-lang.com for the icons --><link href="assets/images/favicon.png" rel="shortcut icon"></head><body><aside class="sidebar" role="nav"><div class="sidebar__header"><h1 class="sidebar__title"><a href="https://bitbucket.org/this-work/scss-framework/src/master/README.md">@this/scss-framework - v6.0.0</a></h1></div><div class="sidebar__body"><button type="button" class="btn-toggle js-btn-toggle" data-alt="Open all">Close all</button><p class="sidebar__item sidebar__item--heading" data-slug="core"><a href="#core">core</a></p><div><p class="sidebar__item sidebar__item--sub-heading" data-slug="core-variable"><a href="#core-variable">variables</a></p><ul class="list-unstyled"><li class="sidebar__item sassdoc__item" data-group="core" data-name="default-unit-type" data-type="variable"><a href="#core-variable-default-unit-type">default-unit-type</a></li><li class="sidebar__item sassdoc__item" data-group="core" data-name="default-conversion-context" data-type="variable"><a href="#core-variable-default-conversion-context">default-conversion-context</a></li></ul><p class="sidebar__item sidebar__item--sub-heading" data-slug="core-function"><a href="#core-function">functions</a></p><ul class="list-unstyled"><li class="sidebar__item sassdoc__item" data-group="core" data-name="strip-unit" data-type="function"><a href="#core-function-strip-unit">strip-unit</a></li></ul></div></div></aside><article class="main" role="main"><header class="header" role="banner"><div class="container"><div class="sassdoc__searchbar searchbar"><label for="js-search-input" class="visually-hidden">Search</label><div class="searchbar__form" id="js-search"><input name="search" type="search" class="searchbar__field" autocomplete="off" autofocus id="js-search-input" placeholder="Search"><ul class="searchbar__suggestions" id="js-search-suggestions"></ul></div></div></div></header><section class="main__section"><h1 class="main__heading" id="core"><div class="container">core</div></h1><section class="main__sub-section" id="core-variable"><h2 class="main__heading--secondary"><div class="container">variables</div></h2><section class="main__item container item" id="core-variable-default-unit-type"><h3 class="item__heading"><a class="item__name" href="#variable-default-unit-type">default-unit-type</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$default-unit-type: &quot;absolute&quot; !default;</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Default unit type. Defined the unit output for all mixins and functions.</p><p><code>absolute</code> - All Outputs are in an absolute unit type (px) or rather the orginal value.</p><p><code>relative</code> - All Outputs are in an relative unit type (rem) when the orginal value are PX values.</p></div><h3 class="item__sub-heading">Type</h3><p><code>String</code></p></section><section class="main__item container item" id="core-variable-default-conversion-context"><h3 class="item__heading"><a class="item__name" href="#variable-default-conversion-context">default-conversion-context</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$default-conversion-context: 16px !default;</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Default conversion context. Used for from and to rem calculation.</p></div><h3 class="item__sub-heading">Type</h3><p><code>Number</code></p></section></section><section class="main__sub-section" id="core-function"><h2 class="main__heading--secondary"><div class="container">functions</div></h2><section class="main__item container item" id="core-function-strip-unit"><h3 class="item__heading"><a class="item__name" href="#function-strip-unit">strip-unit</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function strip-unit($number) { 
-    @if type-of($number) == &quot;number&quot; and not unitless($number) {
-        $pseudo-divider: ($number * 0 + 1);
+<!DOCTYPE html>
+<html lang="en">
 
-        @return calc($number / $pseudo-divider);
-    }
+<head>
+	<title>SCSS Framework Documentation</title>
+	<meta charset='utf-8' />
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' />
+	
+	<meta
+		name='viewport'
+		content='width=device-width,initial-scale=1,user-scalable=yes,maximum-scale=6,viewport-fit=cover'
+	/>
+	<meta name='format-detection' content='telephone=no' />
+	<meta name='author' content='This GmbH' />
+	<meta name='mobile-web-app-capable' content='yes' />
+	<meta name='apple-mobile-web-app-title' content='SCSS Framework Documentation' />
+	<meta name='apple-mobile-web-app-capable' content='yes' />
+	<meta name='apple-mobile-web-app-status-bar-style' content='#000000' />
+	<meta name='msapplication-TileColor' content='#000000' />
+	<meta name='theme-color' content='#000000' />
+	
+	<link
+		rel='apple-touch-icon'
+		size='180x180'
+		href='/assets/img/apple-touch-icon.png'
+	/>
+	<link
+		rel='icon'
+		type='image/png'
+		size='144x144'
+		href='/assets/img/touch-icon-144.png'
+	/>
+	<link
+		rel='icon'
+		type='image/png'
+		size='192x192'
+		href='/assets/img/touch-icon-192.png'
+	/>
+	<link
+		rel='icon'
+		type='image/png'
+		size='512x512'
+		href='/assets/img/touch-icon-512.png'
+	/>
+	<link rel='msapplication-TileImage' href='/assets/img/touch-icon-150.png' />
+	<link
+		rel='mask-icon'
+		href='/assets/img/safari-pinned-tab.svg'
+		color='#000000'
+	/>
+	<link rel='shortcut icon' href='/assets/img/favicon.ico' />
+	
+	<link rel='stylesheet' href='assets/css/normalize.css' />
+	<link rel='stylesheet' href='assets/css/main.css' /></head>
 
-    @return $number;
- }" data-collapsed="@function strip-unit($number) { ... }"><code>@function strip-unit($number) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Strips the unit from a given number</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter </span>Name</th><th scope="col"><span class="visually-hidden">parameter </span>Description</th><th scope="col"><span class="visually-hidden">parameter </span>Type</th><th scope="col"><span class="visually-hidden">parameter </span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$number</code></th><td data-label="desc"><p>[<code>required</code>] Number to remove unit from</p></td><td data-label="type"><code>Number</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>Number</code> &mdash;<p>Unitless number</p></div></section></section></section><footer class="footer" role="contentinfo"><div class="container"><div class="footer__project-info project-info"><!-- Name and URL --> <a class="project-info__name" href="https://bitbucket.org/this-work/scss-framework/src/master/README.md">@this/scss-framework</a><!-- Version --> <span class="project-info__version">- v6.0.0</span><!-- License --></div><a class="footer__watermark" href="http://sassdoc.com"><img src="assets/images/logo_light_inline.svg" alt="SassDoc Logo"></a></div></footer></article><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script><script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script><script src="assets/js/main.min.js"></script></body></html>
+<body>
+
+	<header class='header'>
+	
+		<a href='/'>
+			<img src='/assets/img/logo.png' alt='SCSS Framework Documentation' />
+		</a>
+	
+		<h1 class='header__name'>SCSS Framework Documentation</h1>
+	
+		<ul class='header__navigation'>
+			<li>
+				<a href='/grid' class='header__navigation-link' title='Grid'>Grid</a>
+			</li>
+			<li>
+				<a href='/theme' class='header__navigation-link' title='Theme'>Theme</a>
+			</li>
+			<li>
+				<a href='/view' class='header__navigation-link' title='View'>View</a>
+			</li>
+			<li>
+				<a href='/utils' class='header__navigation-link' title='Utils'>Utils</a>
+			</li>
+		</ul>
+	
+	</header>
+	<main>
+
+	</main>
+
+	<footer class='footer'>
+	
+		<a href='/'>
+			<img src='/assets/img/logo.png' alt='SCSS Framework Documentation' />
+		</a>
+	
+	</footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+	
+<section>
+	<h1></h1>1
+
+
+			<section>
+				<h2>variable</h2>
+
+
+					<h3>color-base (array)</h3>3
+					<p>&lt;p&gt;Associate base color array.
+Includes a key/value pair of the color to increase the consistency.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>color-derivates (array)</h3>3
+					<p>&lt;p&gt;Associate color derivate array.
+Includes a key/value pair of the color to increase the consistency.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+			</section>
+
+
+			<section>
+				<h2>function</h2>
+
+
+					<h3>color ()</h3>3
+					<p>&lt;p&gt;Get the entry from color array as hexcode&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+			</section>
+
+
+</section>
+	
+<section>
+	<h1></h1>1
+
+
+			<section>
+				<h2>variable</h2>
+
+
+					<h3>default-grid (string)</h3>3
+					<p>&lt;p&gt;Default grid declaration. Used as default in grid mixins when no grid is defined.&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>grid-config (array)</h3>3
+					<p>&lt;p&gt;Central grid configuration array.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+			</section>
+
+
+			<section>
+				<h2>function</h2>
+
+
+					<h3>-get-grid ()</h3>3
+					<p>&lt;p&gt;Get the data set of a grid.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>-get-grid-data ()</h3>3
+					<p>&lt;p&gt;Get data from the grid config. Fallback if field doesnt exist.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>get-column-width ()</h3>3
+					<p>&lt;p&gt;Get a column width as percentage from given grid&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+			</section>
+
+
+</section>
+	
+<section>
+	<h1></h1>1
+
+
+			<section>
+				<h2>variable</h2>
+
+
+					<h3>default-unit-type (string)</h3>3
+					<p>&lt;p&gt;Default unit type. Defined the unit output for all mixins and functions.&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>default-conversion-context (number)</h3>3
+					<p>&lt;p&gt;Default conversion context. Used for from and to rem calculation.&lt;/p&gt;
+</p>
+					<div></div>
+
+			</section>
+
+
+			<section>
+				<h2>function</h2>
+
+
+					<h3>strip-unit ()</h3>3
+					<p>&lt;p&gt;Strips the unit from a given number&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>em ()</h3>3
+					<p>&lt;p&gt;Converts &lt;code&gt;px&lt;/code&gt; to &lt;code&gt;em&lt;/code&gt;&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>rem ()</h3>3
+					<p>&lt;p&gt;Converts &lt;code&gt;px&lt;/code&gt; to &lt;code&gt;rem&lt;/code&gt;&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>px ()</h3>3
+					<p>&lt;p&gt;Converts &lt;code&gt;rem&lt;/code&gt; | &lt;code&gt;em&lt;/code&gt; to &lt;code&gt;px&lt;/code&gt;&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>unitize ()</h3>3
+					<p>&lt;p&gt;Converts Unit to given unit type&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>string-replace ()</h3>3
+					<p>&lt;p&gt;Helper to replace text in a string&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>string-split ()</h3>3
+					<p>&lt;p&gt;Helper to split string in array&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>flatten ()</h3>3
+					<p>&lt;p&gt;Helper to flatten a deep array&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>swap ()</h3>3
+					<p>&lt;p&gt;Helper to swap two entrys in an array&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>number ()</h3>3
+					<p>&lt;p&gt;Helper to convert a string to a number&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>sort-values ()</h3>3
+					<p>&lt;p&gt;Sort an array by value.&lt;/p&gt;
+</p>
+					<div></div>
+
+			</section>
+
+
+</section>
+	
+<section>
+	<h1></h1>1
+
+
+			<section>
+				<h2>variable</h2>
+
+
+					<h3>breakpoint-config (array)</h3>3
+					<p>&lt;p&gt;Associate breakpoint array.
+Includes a key/value pair of the breakpoints&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>max-page-width (number)</h3>3
+					<p>&lt;p&gt;Max width of the page area&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>basic-content-width (number)</h3>3
+					<p>&lt;p&gt;Basic width of the content area for calculations&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>site-area-columns (array)</h3>3
+					<p>&lt;p&gt;Responsive declaration of the site area columns
+Key can be existing viewport key or absolute number
+viewport defines the width of the viewport area
+page defines the width of the page area
+content defines the width of the content area&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+			</section>
+
+
+			<section>
+				<h2>function</h2>
+
+
+					<h3>-get-breakpoint ()</h3>3
+					<p>&lt;p&gt;Get the entry from breakpoint array as number&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>breakpoint ()</h3>3
+					<p>&lt;p&gt;Get a breakpoint&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>-decrease-value ()</h3>3
+					<p>&lt;p&gt;Decrease the input to the next safe value.&lt;/p&gt;
+&lt;p&gt;Solve issue that max-width includes the last value in the media query.&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>-mediaquery ()</h3>3
+					<p>&lt;p&gt;Get mediaquery as string&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>sort-breakpoints ()</h3>3
+					<p>&lt;p&gt;Sort a map of values and breakpoints as keys by size of the breakpoint&lt;/p&gt;
+</p>
+					<div></div>
+
+			</section>
+
+
+			<section>
+				<h2>mixin</h2>
+
+
+					<h3>possible-mediaquery ()</h3>3
+					<p>&lt;p&gt;Generates a above include excluding the default breakpoint.&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>below ()</h3>3
+					<p>&lt;p&gt;Generates a max-width media query&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>above ()</h3>3
+					<p>&lt;p&gt;Generates a min-width media query&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>between ()</h3>3
+					<p>&lt;p&gt;Generates a in-between (min- and max-width) media query&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>print ()</h3>3
+					<p>&lt;p&gt;Generates a print media query&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>grid-areas ()</h3>3
+					<p>&lt;p&gt;Generate the grid context for the viewport, page and content areas&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+			</section>
+
+
+</section>
+
+</body>
+</html>

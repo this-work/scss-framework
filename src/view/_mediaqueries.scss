@@ -1,0 +1,184 @@
+////
+///
+/// Mediaquery functions
+///
+/// @group View
+/// @since 2.0.0
+///
+////
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+@use './../core' as utils;
+@use 'breakpoints' as view;
+
+///
+/// Decrease the given input to the next safe value.
+/// Solves the issue that max-width/height is inclusive of given value and not exclusive.
+///
+/// @param {number} $value - [`required`] Max-height/width value
+/// @return {number} Max-height/width value
+///
+/// @file mediaqueries.scss
+///
+///
+@function -get-decreased-max-value($value) {
+	@if (unit($value) == 'em') or (unit($value) == 'rem') or (unit($value) == '%') {
+		@return $value - 0.01;
+	}
+	@return $value - 1;
+}
+
+///
+/// Get mediaquery as string
+///
+/// @param {string} $type - [`required`] type of query like `between`, `min` or `max`
+/// @param {string} $attribute [width] - [`optional`] Attribute of query like `width` or `height`
+/// @param {string or number} $breakpoints - [`required`] breakpoints
+/// @return {string} query for @media css declaration
+///
+/// @file mediaqueries.scss
+///
+/// @example scss - Get a media query with min-width: 700px
+///     $example-var: -build-mediaquery('min', 'width', 700px)
+///
+@function -build-mediaquery($type, $attribute: 'width', $breakpoints...) {
+	$breakpoints: utils.flatten($breakpoints);
+
+	$mediaquery: ();
+
+	@if ($type == 'between') {
+		@if ((list.length($breakpoints) % 2) == 0) {
+			$i: 1;
+
+			@while $i <= list.length($breakpoints) {
+				$min: list.nth($breakpoints, $i);
+				$max: list.nth($breakpoints, $i + 1);
+
+				@if (type-of($min) == string) {
+					$min: view.get-breakpoint($min);
+				}
+
+				@if (type-of($max) == string) {
+					$max: view.get-breakpoint($max);
+				}
+
+				$max: -get-decreased-max-value($max);
+
+				$mediaquery: list.append($mediaquery, '(min-#{$attribute}: #{$min}) and (max-#{$attribute}: #{$max})', comma);
+
+				$i: $i + 2;
+			}
+		} @else {
+			@error 'Counted given breakpoint parameter are odd';
+		}
+	} @else {
+		@each $breakpoint in $breakpoints {
+			@if (type-of($breakpoint) == string) {
+				$breakpoint: view.get-breakpoint($breakpoint);
+			}
+
+			@if ($type == 'max') {
+				$breakpoint: -get-decreased-max-value($breakpoint);
+			}
+
+			$mediaquery: list.append($mediaquery, '(#{$type}-#{$attribute}: #{$breakpoint})', comma);
+		}
+	}
+
+	@return $mediaquery;
+}
+
+///
+/// Generates a max-width media query. Check if is given breakpoint a valid value for a
+/// query and not 'default' or 0px which doesnt need a mediaquery.
+///
+/// @param {string|number} $breakpoint - [`required`] Breakpoint key from $breakpoint-config or number value
+/// @content Rules or directives, which are wrapped in a media query
+///
+/// @example scss - Set the element width below 's' breakpoint to 100px
+/// 	@include below('s') {
+///			width: 100px
+///		}
+///
+/// @file mediaqueries.scss
+///
+@mixin below($breakpoint) {
+	// stylelint-disable-next-line
+	@if ($breakpoint == 'default' or $breakpoint == 0px) {
+		@content;
+	} @else {
+		@media #{-build-mediaquery('max', 'width', $breakpoint)} {
+			@content;
+		}
+	}
+}
+
+///
+/// Generates a min-width media query. Check if is given breakpoint a valid value for a
+/// query and not 'default' or 0px which doesnt need a mediaquery.
+///
+/// @param {string|number} $breakpoint - [`required`] Breakpoint key from $breakpoint-config or number value
+/// @content Rules or directives, which are wrapped in a media query
+///
+/// @example scss - Set the element width above 's' breakpoint to 100px
+/// 	@include above('s') {
+///			width: 100px
+///		}
+///
+/// @file mediaqueries.scss
+///
+@mixin above($breakpoint) {
+	// stylelint-disable-next-line
+	@if ($breakpoint == 'default' or $breakpoint == 0px) {
+		@content;
+	} @else {
+		@media #{-build-mediaquery('min', 'width', $breakpoint)} {
+			@content;
+		}
+	}
+}
+
+///
+/// Generates a in-between (min- and max-width) media query.
+/// Must be a even count of breakpoints to work
+///
+/// @param {string|number} $breakpoints - [`required`] Breakpoint key from $breakpoint-config or number value
+/// @content Rules or directives, which are wrapped in a media query
+///
+/// @example scss - Set the element width between the 's' and the 'xl' breakpoint to 100px
+/// 	@include between('s', 'xl') {
+///			width: 100px
+///		}
+///
+/// @file mediaqueries.scss
+///
+@mixin between($breakpoints...) {
+	@media #{-build-mediaquery('between', 'width', $breakpoints...)} {
+		@content;
+	}
+}
+
+///
+/// Generates a print media query
+///
+/// @content Rules or directives, which are wrapped in a media query
+///
+/// @example scss - Set the element width in the print view to 100px
+/// 	@include print('s', 'xl') {
+///			width: 100px
+///		}
+///
+/// @file mediaqueries.scss
+///
+@mixin print() {
+	@media print {
+		@content;
+	}
+}

@@ -1,0 +1,92 @@
+////
+///
+/// Page Grid functions
+///
+/// @group Grid
+/// @since 6.0.0
+///
+////
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+@use './../view' as view;
+
+///
+/// Responsive declaration of the site area ratios
+/// Key can be existing viewport key or a absolute number
+/// 'viewport' defines a min-padding of the viewport area to the page area
+/// 'page' defines a min-width/min-padding of the page area to the page area
+/// 'content' defines the width of the content area
+///
+/// @prop {String} key - Can be a existing breakpoint key from $breakpoint-config or number value
+/// @prop {String} key.area - Name of the area ('viewport', 'page' and 'content')
+/// @prop {Number} key.width - Value of the area (see Description)
+///
+/// @type array
+/// @file site.scss
+///
+/// @example scss - Define ratios from a viewport size of 0px('default') to a dynamic content width and a padding of 20px
+///  $site-area-ratios: (
+/// 		'default': (
+///        		'viewport': 0,
+///        		'page': 20px,
+///        		'content': 1fr
+/// 		)
+///   );
+///
+$site-area-ratios: () !default;
+
+///
+/// Generate the grid context for the viewport, page and content areas
+///
+/// @param {string} $magnitude [viewport] - [`optional`] Area from which he should build the grid
+///
+/// @example scss - Build the site area grid with all 3 areas
+/// include site-area-grid();
+///
+@mixin site-area-grid($magnitude: 'viewport') {
+	$largest-breakpoint: 0;
+	$largest-breakpoint-content-width: 0;
+
+	@each $breakpoint, $settings in view.sort-by-breakpoint-size($site-area-ratios) {
+		$content-width: map.get($settings, 'content');
+		$page-spacing: map.get($settings, 'page');
+		$viewport-spacing: map.get($settings, 'viewport');
+
+		$current-breakpoint: $breakpoint;
+
+		@if ($largest-breakpoint < $current-breakpoint) {
+			$largest-breakpoint: $current-breakpoint;
+			$largest-breakpoint-content-width: $content-width;
+		}
+
+		@include view.above($breakpoint) {
+			@if ($magnitude == 'page') {
+				--site-area-grid: #{$page-spacing} #{$content-width} #{$page-spacing};
+			} @else {
+				--site-area-grid: #{$viewport-spacing} #{$page-spacing} #{$content-width} #{$page-spacing} #{$viewport-spacing};
+			}
+		}
+	}
+
+	@include view.above(2 * view.$max-page-width - $largest-breakpoint-content-width) {
+		$fixed-page-width: math.div((view.$max-page-width - $largest-breakpoint-content-width), 2);
+
+		@if ($magnitude == 'page') {
+			--site-area-grid: #{$fixed-page-width} #{$largest-breakpoint-content-width} #{$fixed-page-width};
+		} @else {
+			--site-area-grid: 1fr #{$fixed-page-width} #{$largest-breakpoint-content-width} #{$fixed-page-width} 1fr;
+		}
+	}
+
+	display: grid;
+	grid-template-columns: var(--site-area-grid);
+	row-gap: 0;
+	column-gap: 0;
+}

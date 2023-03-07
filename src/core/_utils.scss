@@ -1,0 +1,235 @@
+////
+///
+/// Core util functions
+///
+/// @group Utils
+/// @since 1.0.0
+///
+////
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+///
+/// Helper to replace text in a string
+///
+/// @param {string} $string - Haystack
+/// @param {string} $search - Needle
+/// @param {string} $replace - Replacement
+/// @return {string}
+///
+/// @file utils.scss
+///
+/// @example scss - Replace in a String "is" with "was"
+/// $text: string-replace($text, "is", "was")
+///
+@function string-replace($string, $search, $replace: '') {
+	$index: string.index($string, $search);
+
+	@if $index {
+		@return string.slice($string, 1, $index - 1) + $replace +
+			string-replace(string.slice($string, $index + string.length($search)), $search, $replace);
+	}
+
+	@return $string;
+}
+
+///
+/// Helper to split string in array
+///
+/// @param {string} $string - Haystack
+/// @param {string} $separator - Needle to split the string
+/// @return {array}
+///
+/// @file utils.scss
+///
+/// @example scss - Split '$text' in an array on very comma
+/// $array: string-split($text, ",")
+///
+@function string-split($string, $separator) {
+	$split-arr: ();
+
+	$index: string.index($string, $separator);
+
+	@while $index != null {
+		$item: string.slice($string, 1, $index - 1);
+		$split-arr: list.append($split-arr, $item);
+		$string: string.slice($string, $index + 1);
+		$index: string.index($string, $separator);
+	}
+
+	$split-arr: list.append($split-arr, $string);
+
+	@return $split-arr;
+}
+
+///
+/// Helper to flatten a deep array
+///
+/// @param {array} $list - Array / List
+/// @return {array}
+///
+/// @file utils.scss
+///
+/// @example scss - Flatten a deep $breakpoints array
+/// $breakpoints: flatten($breakpoints);
+///
+@function flatten($list) {
+	$result: ();
+
+	@each $entry in $list {
+		@if (length($entry) == 1) {
+			$result: list.append($result, $entry);
+		} @else {
+			$flat-entry: flatten($entry);
+
+			@each $item in $flat-entry {
+				$result: list.append($result, $item);
+			}
+		}
+	}
+
+	@return $result;
+}
+
+///
+/// Helper to swap two entrys in an array
+///
+/// @param {array} $list - Array / List
+/// @param {number} $index-a - Index of Item to Swap 1
+/// @param {number} $index-b - Index of Item to Swap 2
+/// @return {array}
+///
+/// @file utils.scss
+///
+/// @example scss - Swap entrys 3 and 5 in the color array
+/// $colors: swap($colors, 3, 5);
+///
+@function swap($list, $index-a, $index-b) {
+	@if math.abs($index-a) > list.length($list) or math.abs($index-b) > list.length($list) {
+		@return $list;
+	}
+
+	$tmp: list.nth($list, $index-a);
+	$list: list.set-nth($list, $index-a, list.nth($list, $index-b));
+	$list: list.set-nth($list, $index-b, $tmp);
+
+	@return $list;
+}
+
+///
+/// Helper to convert a string to a number
+///
+/// @param {string|number} $value - Value to be parsed
+/// @return {number}
+///
+/// @file utils.scss
+///
+@function number($value) {
+	@if type-of($value) == 'number' {
+		@return $value;
+	}
+
+	$result: 0;
+	$digits: 0;
+	$minus: string.slice($value, 1, 1) == '-';
+
+	$numbers: (
+		'0': 0,
+		'1': 1,
+		'2': 2,
+		'3': 3,
+		'4': 4,
+		'5': 5,
+		'6': 6,
+		'7': 7,
+		'8': 8,
+		'9': 9,
+	);
+
+	@for $i from if($minus, 2, 1) through string.length($value) {
+		$character: string.slice($value, $i, $i);
+
+		@if not(index(map.keys($numbers), $character) or $character == '.') {
+			// stylelint-disable
+			$units: (
+				'px': 1px,
+				'cm': 1cm,
+				'mm': 1mm,
+				'%': 1%,
+				'ch': 1ch,
+				'pc': 1pc,
+				'in': 1in,
+				'em': 1em,
+				'rem': 1rem,
+				'pt': 1pt,
+				'ex': 1ex,
+				'vw': 1vw,
+				'vh': 1vh,
+				'vmin': 1vmin,
+				'vmax': 1vmax,
+				'fr': 1fr,
+			);
+			// stylelint-enable
+
+			@if map.get($units, string.slice($value, $i)) {
+				@return if($minus, -$result, $result) * map.get($units, string.slice($value, $i));
+			} @else {
+				@return if($minus, -$result, $result);
+			}
+		}
+
+		@if $character == '.' {
+			$digits: 1;
+		} @else if $digits == 0 {
+			$result: $result * 10 + map.get($numbers, $character);
+		} @else {
+			$digits: $digits * 10;
+			$result: $result + math.div(map.get($numbers, $character), $digits);
+		}
+	}
+
+	@return if($minus, -$result, $result);
+}
+
+///
+/// Sort an array by value.
+///
+/// @param {array} $array - Array to sort.
+/// @return {array} - Sorted Array
+///
+/// @file utils.scss
+///
+@function sort-values($array) {
+	$keys: map.keys($array);
+	$values: map.values($array);
+
+	@for $i from 1 through length($values) {
+		@for $j from $i * -1 through -1 {
+			$j: math.abs($j);
+
+			@if ($j > 1 and number(list.nth($values, $j)) < number(list.nth($values, $j - 1))) {
+				$keys: swap($keys, $j, $j - 1);
+				$values: swap($values, $j, $j - 1);
+			}
+		}
+	}
+
+	$sorted-array: ();
+
+	@for $k from 1 through length($values) {
+		$sorted-array: map.merge(
+			$sorted-array,
+			(
+				list.nth($keys, $k): list.nth($values, $k),
+			)
+		);
+	}
+
+	@return $sorted-array;
+}
