@@ -47,10 +47,14 @@ $site-area-ratios: () !default;
 ///
 /// @param {string} $magnitude [viewport] - [`optional`] Area from which he should build the grid
 ///
+/// @file site.scss
+///
 /// @example scss - Build the site area grid with all 3 areas
 /// include site-area-grid();
 ///
 @mixin site-area-grid($magnitude: 'viewport') {
+	display: grid;
+
 	$largest-breakpoint: 0;
 	$largest-breakpoint-content-width: 0;
 
@@ -58,7 +62,6 @@ $site-area-ratios: () !default;
 		$content-width: map.get($settings, 'content');
 		$page-spacing: map.get($settings, 'page');
 		$viewport-spacing: map.get($settings, 'viewport');
-
 		$current-breakpoint: $breakpoint;
 
 		@if ($largest-breakpoint < $current-breakpoint) {
@@ -66,27 +69,32 @@ $site-area-ratios: () !default;
 			$largest-breakpoint-content-width: $content-width;
 		}
 
-		@include view.above($breakpoint) {
-			@if ($magnitude == 'page') {
-				--site-area-grid: #{$page-spacing} #{$content-width} #{$page-spacing};
-			} @else {
-				--site-area-grid: #{$viewport-spacing} #{$page-spacing} #{$content-width} #{$page-spacing} #{$viewport-spacing};
-			}
+		$grid-template-columns: #{$viewport-spacing}
+			#{$page-spacing}
+			#{$content-width}
+			#{$page-spacing}
+			#{$viewport-spacing};
+
+		@if ($magnitude == 'page') {
+			$grid-template-columns: #{$page-spacing} #{$content-width} #{$page-spacing};
 		}
+
+		@include view.above($breakpoint) {
+			grid-template-columns: $grid-template-columns;
+		}
+	}
+
+	$fixed-page-width: math.div((view.$max-page-width - $largest-breakpoint-content-width), 2);
+	$grid-template-columns: 1fr #{$fixed-page-width} #{$largest-breakpoint-content-width} #{$fixed-page-width} 1fr;
+
+	@if ($magnitude == 'page') {
+		$grid-template-columns: #{$fixed-page-width} #{$largest-breakpoint-content-width} #{$fixed-page-width};
 	}
 
 	@include view.above(2 * view.$max-page-width - $largest-breakpoint-content-width) {
-		$fixed-page-width: math.div((view.$max-page-width - $largest-breakpoint-content-width), 2);
-
-		@if ($magnitude == 'page') {
-			--site-area-grid: #{$fixed-page-width} #{$largest-breakpoint-content-width} #{$fixed-page-width};
-		} @else {
-			--site-area-grid: 1fr #{$fixed-page-width} #{$largest-breakpoint-content-width} #{$fixed-page-width} 1fr;
-		}
+		grid-template-columns: $grid-template-columns;
 	}
 
-	display: grid;
-	grid-template-columns: var(--site-area-grid);
 	row-gap: 0;
 	column-gap: 0;
 }

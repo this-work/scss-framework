@@ -2,7 +2,7 @@
 ///
 /// Color functions
 ///
-/// @group Colors
+/// @group Theme
 /// @since 2.0.0
 ///
 ////
@@ -58,10 +58,7 @@ $color-derivates: () !default;
 /// @example scss - Set the css color to 'color-1'
 /// color: color('color-1');
 ///
-@function color(
-	$color-name,
-	$color-map: map.merge($color-base, $color-derivates)
-) {
+@function color($color-name, $color-map: map.merge($color-base, $color-derivates)) {
 	@if (not map.has-key($color-map, $color-name)) {
 		@error 'Given color map has no color named "#{$color-name}".';
 	}
