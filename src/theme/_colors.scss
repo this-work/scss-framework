@@ -15,15 +15,28 @@
 @use 'sass:selector';
 @use 'sass:string';
 
+@use './../core' as utils;
+
+///
+/// CSS custom properties color map prefix.
+/// All colors will be prefixed with given string.
+///
+/// @type string
+/// @file colors.scss
+///
+$color-map-prefix: 'color-' !default;
+
 ///
 /// Associate base color array.
 /// Includes a key/value pair of the color to increase the consistency.
 ///
-/// @prop {String} name -  Name of the color
-/// @prop {Number} hex -  Hexcode of the color
+/// @prop {String} name - Name of the color
+/// @prop {Color} hex - Hexcode of the color
 ///
 /// @type array
-/// @example scss - Set two colors
+/// @file colors.scss
+///
+/// @example scss - Declare two colors
 ///  $color-base (
 ///     'color-1' : #000000,
 ///     'color-2' : #FFFFFF
@@ -35,25 +48,92 @@ $color-base: () !default;
 /// Associate color derivate array.
 /// Includes a key/value pair of the color to increase the consistency.
 ///
-/// @prop {String} name -  Name of the color
-/// @prop {Number} hex -  Hexcode of the color
+/// @prop {String} name - Name of the color
+/// @prop {Color} hex - Hexcode of the color
 ///
 /// @type array
-/// @example scss - Set two colors
+/// @file colors.scss
+///
+/// @example scss - Declare two colors
 ///  $color-derivates (
-///     'color-1' : #000000,
-///     'color-2' : #FFFFFF
+///     'color-1:alpha' : rgba(map-get($color-base,'color-1'), .75),
+///     'color-2:alpha' : rgba(map-get($color-base,'color-2'), .5),
 ///  );
 ///
 $color-derivates: () !default;
 
 ///
+/// Prefix oh the theme variation class.
+///
+/// @type string
+/// @file colors.scss
+///
+$theme-variations-class-prefix: 'theme-' !default;
+
+///
+/// CSS custom properties theme-variations map prefix.
+/// All variations will be prefixed with given string.
+///
+/// @type string
+/// @file colors.scss
+///
+$theme-variations-property-prefix: 'theme-variations-' !default;
+
+///
+/// Default theme variation. The variable determines the default
+/// css attributes per palette. Can be disabled with false.
+///
+/// @type string|boolean
+/// @file colors.scss
+///
+$theme-variations-default: false !default;
+
+///
+/// Associate theme variations array.
+/// Includes a object with a palette name which includes the theme variations with the corresponding style
+/// changes. Optionally, instead of the value of the style attribute, it is possible to open another array for
+/// optional pseudo classes.
+///
+/// @type array
+/// @file colors.scss
+///
+/// @example scss - Set a copytext theme variation for light, medium and dark and da complexer link theme variation
+///  $theme-variations: (
+///     'copytext': (
+///         light: (
+///             color: 'black'
+///         ),
+///         dark: (
+///             color: 'white'
+///         )
+///     ),
+///     'link': (
+///         light: (
+///				color: (
+///					'default': 'black',
+///					':hover': #FF00FF,
+///				),
+///         ),
+///         dark: (
+///				color: (
+///					'default': 'white',
+///					':hover': #FF00FF,
+///				),
+///         )
+///     )
+///  );
+///
+$theme-variations: () !default;
+
+///
 /// Get the entry from color array as hexcode
 ///
 /// @param {string} $color-name - Name of the color
-/// @param {array} $color-map [$default-color-map] - [`optional`] color array
+/// @param {array} $color-map [map.merge($color-base, $color-derivates)] - [`optional`] Custom color array
 ///
 /// @return {string} Hexcode
+///
+/// @file colors.scss
 ///
 /// @example scss - Set the css color to 'color-1'
 /// color: color('color-1');
@@ -63,5 +143,227 @@ $color-derivates: () !default;
 		@error 'Given color map has no color named "#{$color-name}".';
 	}
 
-	@return map.get($color-map, $color-name);
+	@return var(--#{$color-map-prefix}#{$color-name});
+}
+
+///
+/// Create a color css custom property with given palette informations
+///
+/// @param {string} $palette - Name of the palette of the attribute
+/// @param {string} $attribute - CSS attribute which be filled with the custom property
+/// @param {string|array} $value - Value of the attribute. Can be a array too, see color-variations array.
+///
+/// @file colors.scss
+///
+/// @example scss
+/// include css-custom-property-color-attribute();
+///
+@mixin css-custom-property-color-attribute($palette, $attribute, $value) {
+	@if type-of($value) == color or type-of($value) == list or type-of($value) == string {
+		#{$attribute}: var(--#{$theme-variations-property-prefix}#{$palette}-#{$attribute});
+	} @else {
+		@each $pseudo, $color in $value {
+			@if $pseudo == 'default' {
+				#{$attribute}: var(--#{$theme-variations-property-prefix}#{$palette}-#{$attribute});
+			} @else {
+				&#{$pseudo} {
+					#{$attribute}: var(
+						--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}-#{utils.string-replace($pseudo, ':', '')}
+					);
+				}
+			}
+		}
+	}
+}
+
+///
+/// Create a color css custom property with given palette informations
+///
+/// @param {string} $palette - Name of the palette of the attribute
+/// @param {string} $attribute - CSS attribute for the constant naming
+/// @param {string|array} $value - Value of the attribute. Can be a array too, see color-variations array.
+///
+/// @file colors.scss
+///
+/// @example scss
+/// include css-custom-property-color-declaration();
+///
+@mixin css-custom-property-color-declaration($palette, $attribute, $value) {
+	// stylelint-disable
+	@if type-of($value) == color or type-of($value) == list {
+		--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{$value};
+	} @else if type-of($value) == string {
+		@if string.index($value, 'gradient') {
+			--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{$value};
+		} @else {
+			--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{color($value)};
+		}
+	} @else {
+		@each $pseudo, $color in $value {
+			@if $pseudo == 'default' {
+				@if type-of($color) == string {
+					@if string.index($color, 'gradient') {
+						--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{$color};
+					} @else {
+						--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{color($color)};
+					}
+				} @else {
+					--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{$color};
+				}
+			} @else {
+				@if type-of($color) == string {
+					@if string.index($color, 'gradient') {
+						--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}-#{utils.string-replace($pseudo, ":", "")}: #{$color};
+					} @else {
+						--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}-#{utils.string-replace($pseudo, ":", "")}: #{color(
+								$color
+							)};
+					}
+				} @else {
+					--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}-#{utils.string-replace($pseudo, ":", "")}: #{$color};
+				}
+			}
+		}
+	}
+	// stylelint-enable
+}
+
+///
+/// Generate from the theme-variations array all attributes from the given palette. All attributes will
+/// be are output as css custom properties.
+///
+/// @param {string} $palette - Color palette name
+/// @param {string} $cherrypick [false] - [`optional`] Only the given attribute will be rendered.
+/// @param {array} $theme-variations-map[$theme-variations] - [`optional`] Theme variations array
+///
+/// @file colors.scss
+///
+/// @example scss - Render all attributes from the copytext palette with matching custom property variables
+/// include color-variation('copytext');
+///
+@mixin color-variation($palette, $cherrypick: false, $theme-variations-map: $theme-variations) {
+	@if (not map-has-key($theme-variations-map, $palette)) {
+		@error 'Given theme variations map has no palette named "#{$palette}".';
+	}
+
+	$restructured-theme-variations: ();
+	@each $palette-name, $theme-variations in $theme-variations-map {
+		@each $theme-variation, $attributes in $theme-variations {
+			$restructured-theme-variations: map.deep-merge(
+				$restructured-theme-variations,
+				(
+					$palette-name: $attributes,
+				)
+			);
+		}
+	}
+
+	@each $attribute, $value in map-get($restructured-theme-variations, $palette) {
+		@if ($attribute == $cherrypick and not ($cherrypick == false)) or ($cherrypick == false) {
+			@include css-custom-property-color-attribute($palette, $attribute, $value);
+		}
+	}
+}
+
+///
+/// Generate from the theme-variations array all theme-variations with all associated css custom properties
+///
+/// @param {array} $theme-variations-map[$theme-variations] - [`optional`] Theme variations array
+///
+/// @file colors.scss
+///
+/// @example scss - Create all css custom properties theme-variations color attributes
+/// include declare-theme-variations();
+///
+@mixin declare-theme-variations($theme-variations-map: $theme-variations) {
+	$restructured-theme-variations: ();
+
+	@each $palette-name, $theme-variations in $theme-variations-map {
+		@each $theme-variation, $attributes in $theme-variations {
+			$restructured-theme-variations: map.deep-merge(
+				$restructured-theme-variations,
+				(
+					$theme-variation: (
+						$palette-name: $attributes,
+					),
+				)
+			);
+		}
+	}
+
+	@each $theme-variation, $palettes in $restructured-theme-variations {
+		.#{$theme-variations-class-prefix}#{$theme-variation} {
+			@each $palette, $attributes in $palettes {
+				@if ($theme-variations-default) {
+					$default-color-variation-palette: map.get(
+						map.get($restructured-theme-variations, $theme-variations-default),
+						$palette
+					);
+					$attributes: map.deep-merge($default-color-variation-palette, $attributes);
+				}
+
+				@each $attribute, $value in $attributes {
+					@include css-custom-property-color-declaration($palette, $attribute, $value);
+				}
+			}
+		}
+	}
+}
+
+///
+/// Mixin to generate css custom properties for each color based on a given color map
+///
+/// @param {array} $color-map ['map.merge($color-base, $color-derivates)'] - [`optional`] Custom color array
+///
+/// @file colors.scss
+///
+/// @example scss - Create all css custom properties color attributes
+/// include declare-color-map();
+///
+@mixin declare-color-map($color-map: map.merge($color-base, $color-derivates)) {
+	@include utils.css-custom-properties-wrapper {
+		@each $color-name, $color-value in $color-map {
+			--#{$color-map-prefix}#{$color-name}: #{$color-value};
+		}
+	}
+}
+
+///
+/// Generate a bundle of foreground color classes based on given color map
+///
+/// @param {array} $color-map [$color-base] - [`optional`] Color array
+/// @param {string} $class-prefix ['foreground-color'] - [`optional`] Class prefix
+/// @param {string} $class-separator ['-'] - [`optional`] Class sperator
+///
+/// @file colors.scss
+///
+/// @example scss - Create foreground colors classes
+/// include generate-color-foreground-classes();
+///
+@mixin generate-color-foreground-classes(
+	$color-map: $color-base,
+	$class-prefix: 'foreground-color',
+	$class-separator: '-'
+) {
+	@include utils.generate-classes($color-map, color, $class-prefix, $class-separator);
+}
+
+///
+/// Generate a bundle of background color classes based on given color map
+///
+/// @param {array} $color-map [$color-base] - [`optional`] Color array
+/// @param {string} $class-prefix ['background-color'] - [`optional`] Class prefix
+/// @param {string} $class-separator ['-'] - [`optional`] Class seperator
+///
+/// @file colors.scss
+///
+/// @example scss - Create background colors classes
+/// include generate-color-background-classes();
+///
+@mixin generate-color-background-classes(
+	$color-map: $color-base,
+	$class-prefix: 'background-color',
+	$class-separator: '-'
+) {
+	@include utils.generate-classes($color-map, background-color, $class-prefix, $class-separator);
 }

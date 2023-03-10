@@ -20,12 +20,61 @@
 			'page': 500px,
 			'content': 1200px,
 		),
+	),
+	$theme-variations-default: 'light',
+	$theme-variations: (
+		'copytext': (
+			light: (
+				color: #00f0ff,
+			),
+			dark: (
+				color: #fff,
+			),
+		),
+		'link': (
+			light: (
+				color: (
+					'default': #00f0ff,
+					':hover': #f0f,
+				),
+			),
+			dark: (
+				color: (
+					'default': #fff,
+					':hover': #f0f,
+				),
+			),
+		),
+		'li': (
+			light: (
+				color: 'black',
+				background: #ff0f00,
+			),
+			dark: (
+				background: #fff,
+			),
+		),
 	)
 );
+
+@include declare-color-map;
+@include declare-theme-variations;
 
 body {
 	background: color('black');
 	font-size: unitize(16px);
+}
+
+p {
+	@include color-variation('copytext');
+}
+
+a {
+	@include color-variation('link');
+}
+
+li {
+	@include color-variation('li');
 }
 
 .module {

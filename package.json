@@ -9,6 +9,7 @@
 		"documentation-build": "sassdoc ./src",
 		"documentation-show": "serve ./documentation --listen 6010",
 		"test-framework": "sass test/test.scss test/dist/stylesheet.css --no-source-map",
+		"test-old-framework": "sass test/testold.scss test/dist/stylesheet-old.css --no-source-map",
 		"linting-prettier": "prettier --write ./src",
 		"linting-stylelint": "stylelint \"src/**/*.scss\"",
 		"linting": "npm run linting-prettier && npm run linting-stylelint"

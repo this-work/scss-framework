@@ -112,42 +112,14 @@
 				<h2>variable</h2>
 
 
-					<h3>color-base (array)</h3>3
-					<p>&lt;p&gt;Associate base color array.
-Includes a key/value pair of the color to increase the consistency.&lt;/p&gt;
+					<h3>site-area-ratios (array)</h3>3
+					<p>&lt;p&gt;Responsive declaration of the site area ratios
+Key can be existing viewport key or a absolute number
+&amp;#39;viewport&amp;#39; defines a min-padding of the viewport area to the page area
+&amp;#39;page&amp;#39; defines a min-width/min-padding of the page area to the page area
+&amp;#39;content&amp;#39; defines the width of the content area&lt;/p&gt;
 </p>
 					<div>[object Object]</div>
-
-
-					<h3>color-derivates (array)</h3>3
-					<p>&lt;p&gt;Associate color derivate array.
-Includes a key/value pair of the color to increase the consistency.&lt;/p&gt;
-</p>
-					<div>[object Object]</div>
-
-			</section>
-
-
-			<section>
-				<h2>function</h2>
-
-
-					<h3>color ()</h3>3
-					<p>&lt;p&gt;Get the entry from color array as hexcode&lt;/p&gt;
-</p>
-					<div>[object Object]</div>
-
-			</section>
-
-
-</section>
-	
-<section>
-	<h1></h1>1
-
-
-			<section>
-				<h2>variable</h2>
 
 
 					<h3>default-grid (string)</h3>3
@@ -158,6 +130,18 @@ Includes a key/value pair of the color to increase the consistency.&lt;/p&gt;
 
 					<h3>grid-config (array)</h3>3
 					<p>&lt;p&gt;Central grid configuration array.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+			</section>
+
+
+			<section>
+				<h2>mixin</h2>
+
+
+					<h3>site-area-grid ()</h3>3
+					<p>&lt;p&gt;Generate the grid context for the viewport, page and content areas&lt;/p&gt;
 </p>
 					<div>[object Object]</div>
 
@@ -184,6 +168,194 @@ Includes a key/value pair of the color to increase the consistency.&lt;/p&gt;
 					<p>&lt;p&gt;Get a column width as percentage from given grid&lt;/p&gt;
 </p>
 					<div>[object Object]</div>
+
+			</section>
+
+
+</section>
+	
+<section>
+	<h1></h1>1
+
+
+			<section>
+				<h2>variable</h2>
+
+
+					<h3>color-map-prefix (string)</h3>3
+					<p>&lt;p&gt;CSS custom properties color map prefix.
+All colors will be prefixed with given string.&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>color-base (array)</h3>3
+					<p>&lt;p&gt;Associate base color array.
+Includes a key/value pair of the color to increase the consistency.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>color-derivates (array)</h3>3
+					<p>&lt;p&gt;Associate color derivate array.
+Includes a key/value pair of the color to increase the consistency.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>theme-variations-class-prefix (string)</h3>3
+					<p>&lt;p&gt;Prefix oh the theme variation class.&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>theme-variations-property-prefix (string)</h3>3
+					<p>&lt;p&gt;CSS custom properties theme-variations map prefix.
+All variations will be prefixed with given string.&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>theme-variations-default (string|boolean)</h3>3
+					<p>&lt;p&gt;Default theme variation. The variable determines the default
+css attributes per palette. Can be disabled with false.&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>theme-variations (array)</h3>3
+					<p>&lt;p&gt;Associate theme variations array.
+Includes a object with a palette name which includes the theme variations with the corresponding style
+changes. Optionally, instead of the value of the style attribute, it is possible to open another array for
+optional pseudo classes.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>default-normalize-font-dimension (string)</h3>3
+					<p>&lt;p&gt;Default normalize font dimension&lt;/p&gt;
+&lt;p&gt;Can be defined as font-dimension name&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>default-normalize-bold-weight (string)</h3>3
+					<p>&lt;p&gt;Default normalize bold font weight&lt;/p&gt;
+&lt;p&gt;Can be defined as number, string or font-dimension name&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>default-normalize-word-break (string)</h3>3
+					<p>&lt;p&gt;Default normalize word break&lt;/p&gt;
+</p>
+					<div></div>
+
+			</section>
+
+
+			<section>
+				<h2>function</h2>
+
+
+					<h3>color ()</h3>3
+					<p>&lt;p&gt;Get the entry from color array as hexcode&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+			</section>
+
+
+			<section>
+				<h2>mixin</h2>
+
+
+					<h3>css-custom-property-color-attribute ()</h3>3
+					<p>&lt;p&gt;Create a color css custom property with given palette informations&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>css-custom-property-color-declaration ()</h3>3
+					<p>&lt;p&gt;Create a color css custom property with given palette informations&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>color-variation ()</h3>3
+					<p>&lt;p&gt;Generate from the theme-variations array all attributes from the given palette. All attributes will
+be are output as css custom properties.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>declare-theme-variations ()</h3>3
+					<p>&lt;p&gt;Generate from the theme-variations array all theme-variations with all associated css custom properties&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>declare-color-map ()</h3>3
+					<p>&lt;p&gt;Mixin to generate css custom properties for each color based on a given color map&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>generate-color-foreground-classes ()</h3>3
+					<p>&lt;p&gt;Generate a bundle of foreground color classes based on given color map&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>generate-color-background-classes ()</h3>3
+					<p>&lt;p&gt;Generate a bundle of background color classes based on given color map&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>normalize-document ()</h3>3
+					<p>&lt;p&gt;Mixin to normalize the document&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>normalize-sections ()</h3>3
+					<p>&lt;p&gt;Mixin to normalize sections&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;main&lt;/code&gt;, &lt;code&gt;details&lt;/code&gt;, &lt;code&gt;summary&lt;/code&gt;, &lt;code&gt;template&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;display:&lt;/strong&gt; Render the elements consistently in IE.&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>normalize-text-semantics ()</h3>3
+					<p>&lt;p&gt;Mixin to normalize text semantics&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>normalize-media ()</h3>3
+					<p>&lt;p&gt;Mixin to normalize media elements&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>normalize-ui ()</h3>3
+					<p>&lt;p&gt;Mixin to normalize form/ui elements&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>normalize-misc ()</h3>3
+					<p>&lt;p&gt;Mixin to normalize misc elements&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>generate-normalize ()</h3>3
+					<p>&lt;p&gt;Mixin to normalize base
+Includes all normalize mixins to complete normalize a document&lt;/p&gt;
+</p>
+					<div></div>
 
 			</section>
 
@@ -284,6 +456,24 @@ Includes a key/value pair of the color to increase the consistency.&lt;/p&gt;
 			</section>
 
 
+			<section>
+				<h2>mixin</h2>
+
+
+					<h3>css-custom-properties-wrapper ()</h3>3
+					<p>&lt;p&gt;Wrap a css custom property in a :root pseudoclass when no parent exist&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>generate-classes ()</h3>3
+					<p>&lt;p&gt;Generate from array a bundle of classes&lt;/p&gt;
+</p>
+					<div></div>
+
+			</section>
+
+
 </section>
 	
 <section>
@@ -302,25 +492,15 @@ Includes a key/value pair of the breakpoints&lt;/p&gt;
 
 
 					<h3>max-page-width (number)</h3>3
-					<p>&lt;p&gt;Max width of the page area&lt;/p&gt;
+					<p>&lt;p&gt;Max width of the page for calculations in px&lt;/p&gt;
 </p>
 					<div></div>
 
 
 					<h3>basic-content-width (number)</h3>3
-					<p>&lt;p&gt;Basic width of the content area for calculations&lt;/p&gt;
+					<p>&lt;p&gt;Random basic width of the content area for calculations in px&lt;/p&gt;
 </p>
 					<div></div>
-
-
-					<h3>site-area-columns (array)</h3>3
-					<p>&lt;p&gt;Responsive declaration of the site area columns
-Key can be existing viewport key or absolute number
-viewport defines the width of the viewport area
-page defines the width of the page area
-content defines the width of the content area&lt;/p&gt;
-</p>
-					<div>[object Object]</div>
 
 			</section>
 
@@ -329,35 +509,30 @@ content defines the width of the content area&lt;/p&gt;
 				<h2>function</h2>
 
 
-					<h3>-get-breakpoint ()</h3>3
-					<p>&lt;p&gt;Get the entry from breakpoint array as number&lt;/p&gt;
+					<h3>get-breakpoint ()</h3>3
+					<p>&lt;p&gt;Get a breakpoint from breakpoint configuration.&lt;/p&gt;
 </p>
 					<div>[object Object]</div>
 
 
-					<h3>breakpoint ()</h3>3
-					<p>&lt;p&gt;Get a breakpoint&lt;/p&gt;
+					<h3>sort-by-breakpoint-size ()</h3>3
+					<p>&lt;p&gt;Sort the given map by size of the breakpoint config values of the key and resolved all keys.
+The key can be a normal number too.&lt;/p&gt;
 </p>
 					<div>[object Object]</div>
 
 
-					<h3>-decrease-value ()</h3>3
-					<p>&lt;p&gt;Decrease the input to the next safe value.&lt;/p&gt;
-&lt;p&gt;Solve issue that max-width includes the last value in the media query.&lt;/p&gt;
+					<h3>-get-decreased-max-value ()</h3>3
+					<p>&lt;p&gt;Decrease the given input to the next safe value.
+Solves the issue that max-width/height is inclusive of given value and not exclusive.&lt;/p&gt;
 </p>
 					<div></div>
 
 
-					<h3>-mediaquery ()</h3>3
+					<h3>-build-mediaquery ()</h3>3
 					<p>&lt;p&gt;Get mediaquery as string&lt;/p&gt;
 </p>
 					<div>[object Object]</div>
-
-
-					<h3>sort-breakpoints ()</h3>3
-					<p>&lt;p&gt;Sort a map of values and breakpoints as keys by size of the breakpoint&lt;/p&gt;
-</p>
-					<div></div>
 
 			</section>
 
@@ -366,38 +541,67 @@ content defines the width of the content area&lt;/p&gt;
 				<h2>mixin</h2>
 
 
-					<h3>possible-mediaquery ()</h3>3
-					<p>&lt;p&gt;Generates a above include excluding the default breakpoint.&lt;/p&gt;
-</p>
-					<div></div>
-
-
 					<h3>below ()</h3>3
-					<p>&lt;p&gt;Generates a max-width media query&lt;/p&gt;
+					<p>&lt;p&gt;Generates a max-width media query. Check if is given breakpoint a valid value for a
+query and not &amp;#39;default&amp;#39; or 0px which doesnt need a mediaquery.&lt;/p&gt;
 </p>
-					<div></div>
+					<div>[object Object]</div>
 
 
 					<h3>above ()</h3>3
-					<p>&lt;p&gt;Generates a min-width media query&lt;/p&gt;
+					<p>&lt;p&gt;Generates a min-width media query. Check if is given breakpoint a valid value for a
+query and not &amp;#39;default&amp;#39; or 0px which doesnt need a mediaquery.&lt;/p&gt;
 </p>
-					<div></div>
+					<div>[object Object]</div>
 
 
 					<h3>between ()</h3>3
-					<p>&lt;p&gt;Generates a in-between (min- and max-width) media query&lt;/p&gt;
+					<p>&lt;p&gt;Generates a in-between (min- and max-width) media query.
+Must be a even count of breakpoints to work&lt;/p&gt;
 </p>
-					<div></div>
+					<div>[object Object]</div>
 
 
 					<h3>print ()</h3>3
 					<p>&lt;p&gt;Generates a print media query&lt;/p&gt;
 </p>
+					<div>[object Object]</div>
+
+
+					<h3>rtl ()</h3>3
+					<p>&lt;p&gt;Mixin to generate Styles for the RTL direction
+Needs for usage a &amp;#39;dir&amp;#39; attribute on a parent node&lt;/p&gt;
+</p>
 					<div></div>
 
 
-					<h3>grid-areas ()</h3>3
-					<p>&lt;p&gt;Generate the grid context for the viewport, page and content areas&lt;/p&gt;
+					<h3>ltr ()</h3>3
+					<p>&lt;p&gt;Mixin to generate Styles for the LTR direction
+Works with and without &amp;#39;dir&amp;#39; attribute&lt;/p&gt;
+</p>
+					<div></div>
+
+
+					<h3>placeholder ()</h3>3
+					<p>&lt;p&gt;Mixin to style the &lt;code&gt;placeholder&lt;/code&gt; text of an &lt;code&gt;input&lt;/code&gt; element.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>selection ()</h3>3
+					<p>&lt;p&gt;Mixin to style the text &lt;code&gt;selection&lt;/code&gt; of a user interaction&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>deactivate-user-selection ()</h3>3
+					<p>&lt;p&gt;Deactivate all user interactions.&lt;/p&gt;
+</p>
+					<div>[object Object]</div>
+
+
+					<h3>hide-scrollbar ()</h3>3
+					<p>&lt;p&gt;Mixin to hide the scrollbar&lt;/p&gt;
 </p>
 					<div>[object Object]</div>
 

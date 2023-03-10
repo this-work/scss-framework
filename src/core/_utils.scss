@@ -233,3 +233,38 @@
 
 	@return $sorted-array;
 }
+
+///
+/// Wrap a css custom property in a :root pseudoclass when no parent exist
+///
+/// @content Rules or directives, which are wrapped in a possbile :root pseudoclass
+///
+/// @file utils.scss
+///
+@mixin css-custom-properties-wrapper() {
+	@if (&) {
+		@content;
+	} @else {
+		:root {
+			@content;
+		}
+	}
+}
+
+///
+/// Generate from array a bundle of classes
+///
+/// @param {array} $map - Array to loop
+/// @param {string} $property - CSS property to set
+/// @param {string} $class-prefix - Class prefix
+/// @param {string} $class-separator - [`optional`] Class sperator
+///
+/// @file utils.scss
+///
+@mixin generate-classes($map, $property, $class-prefix, $class-separator: '-') {
+	@each $key, $value in $map {
+		.#{$class-prefix}#{$class-separator}#{$key} {
+			#{$property}: $value;
+		}
+	}
+}

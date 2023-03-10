@@ -1,0 +1,82 @@
+$default-unit-type: 'relative';
+
+$color-base: (
+	'black': #0f0,
+);
+
+$breakpoint-config: (
+	's': 700px,
+	'xl': 1000px,
+	'xxl': 1600px,
+	'xxxl': 1800px,
+);
+
+$site-area-columns: (
+	'default': (
+		'viewport': 0,
+		'page': 20px,
+		'content': 1fr,
+	),
+	'xl': (
+		'viewport': 100px,
+		'page': 500px,
+		'content': 1200px,
+	),
+);
+
+$color-palettes: (
+	'copytext': (
+		'light': (
+			color: 'black',
+		),
+		dark: (
+			color: #fff,
+		),
+	),
+	'link': (
+		'light': (
+			color: (
+				'default': 'black',
+				':hover': #f0f,
+			),
+		),
+		dark: (
+			color: (
+				'default': #fff,
+				':hover': #f0f,
+			),
+		),
+	),
+	'li': (
+		'light': (
+			background: #ff0f00,
+		),
+		dark: (
+			color: #fff,
+			background: 'black',
+		),
+	),
+);
+
+@import '../../old.scss-framework/import';
+
+body {
+	background: color('black');
+	font-size: unitize(16px);
+}
+
+p {
+	@include color-theme('copytext');
+}
+
+a {
+	@include color-theme('link');
+}
+
+li {
+	@include color-theme('li');
+}
+
+.module {
+	@include grid-areas;
+}
