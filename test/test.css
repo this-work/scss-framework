@@ -1,0 +1,76 @@
+@property --color-black {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0f0;
+}
+@property --color-mode-property-copytext-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #00f0ff;
+}
+@property --color-mode-property-background-background {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #fff;
+}
+@property --color-mode-property-link-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #00f0ff;
+}
+@property --color-mode-property-link-color-hover {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f0f;
+}
+@property --color-mode-property-li-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: var(--color-black);
+}
+@property --color-mode-property-li-background {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ff0f00;
+}
+.color-mode-light {
+  --color-mode-property-copytext-color: #00f0ff;
+  --color-mode-property-background-background: #fff;
+  --color-mode-property-link-color: #00f0ff;
+  --color-mode-property-link-color-hover: #f0f;
+  --color-mode-property-li-color: var(--color-black);
+  --color-mode-property-li-background: #ff0f00;
+}
+
+.color-mode-dark {
+  --color-mode-property-copytext-color: #fff;
+  --color-mode-property-background-background: #000;
+  --color-mode-property-link-color: #fff;
+  --color-mode-property-link-color-hover: #f0f;
+  --color-mode-property-li-color: var(--color-black);
+  --color-mode-property-li-background: #fff;
+}
+
+p {
+  display: block;
+  padding: 15px;
+  color: var(--color-black);
+}
+
+.link {
+  color: var(--color-mode-property-link-color);
+}
+.link:hover {
+  color: var(--color-mode-property-link-color-hover);
+}
+
+.background {
+  display: block;
+  padding: 15px;
+  background: var(--color-mode-property-background-background);
+}
+
+.li {
+  color: var(--color-mode-property-li-color);
+  background: var(--color-mode-property-li-background);
+}

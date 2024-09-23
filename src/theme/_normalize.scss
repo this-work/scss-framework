@@ -15,18 +15,8 @@
 @use 'sass:selector';
 @use 'sass:string';
 
-///
-/// Default normalize font dimension
-///
-/// Can be defined as font-dimension name
-/// @type string
-/// @file normalize.scss
-///
-$default-normalize-font-dimension: if(
-	meta.variable-exists(default-font-dimensions),
-	false,
-	$default-font-dimensions
-) !default;
+@use './typography' as *;
+@use './../core' as utils;
 
 ///
 /// Default normalize bold font weight
@@ -81,7 +71,7 @@ $default-normalize-word-break: break-word !default;
 	html {
 		box-sizing: border-box;
 
-		@if (meta.variable-exists(default-unit-type) and $default-unit-type != 'absolute') {
+		@if (utils.$default-unit-type != 'absolute') {
 			font-size: 100%;
 		}
 
@@ -92,9 +82,7 @@ $default-normalize-word-break: break-word !default;
 		// stylelint-disable
 		-webkit-tap-highlight-color: transparent;
 		-webkit-focus-ring-color: transparent;
-
-		-ms-text-size-adjust: 100%;
-		-webkit-text-size-adjust: 100%;
+		text-size-adjust: 100%;
 		// stylelint-enable
 	}
 
@@ -425,7 +413,7 @@ $default-normalize-word-break: break-word !default;
 ///
 /// **display** Remove the browser clear button in webkit browser.
 ///
-@mixin normalize-ui($normalize-font-dimension: $default-normalize-font-dimension) {
+@mixin normalize-ui($normalize-font-dimension: $default-font-dimension) {
 	$normalize-line-height: 1.45;
 
 	@if (function-exists(line-height) and $normalize-font-dimension) {

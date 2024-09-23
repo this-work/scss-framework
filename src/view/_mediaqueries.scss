@@ -16,7 +16,7 @@
 @use 'sass:string';
 
 @use './../core' as utils;
-@use 'breakpoints' as view;
+@use 'breakpoints' as breakpoints;
 
 ///
 /// Decrease the given input to the next safe value.
@@ -62,11 +62,11 @@
 				$max: list.nth($breakpoints, $i + 1);
 
 				@if (type-of($min) == string) {
-					$min: view.get-breakpoint($min);
+					$min: breakpoints.get-breakpoint($min);
 				}
 
 				@if (type-of($max) == string) {
-					$max: view.get-breakpoint($max);
+					$max: breakpoints.get-breakpoint($max);
 				}
 
 				$max: -get-decreased-max-value($max);
@@ -81,7 +81,7 @@
 	} @else {
 		@each $breakpoint in $breakpoints {
 			@if (type-of($breakpoint) == string) {
-				$breakpoint: view.get-breakpoint($breakpoint);
+				$breakpoint: breakpoints.get-breakpoint($breakpoint);
 			}
 
 			@if ($type == 'max') {

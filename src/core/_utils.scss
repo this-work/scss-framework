@@ -15,6 +15,8 @@
 @use 'sass:selector';
 @use 'sass:string';
 
+@use './conversion' as conversion;
+
 ///
 /// Helper to replace text in a string
 ///
@@ -123,81 +125,6 @@
 }
 
 ///
-/// Helper to convert a string to a number
-///
-/// @param {string|number} $value - Value to be parsed
-/// @return {number}
-///
-/// @file utils.scss
-///
-@function number($value) {
-	@if type-of($value) == 'number' {
-		@return $value;
-	}
-
-	$result: 0;
-	$digits: 0;
-	$minus: string.slice($value, 1, 1) == '-';
-
-	$numbers: (
-		'0': 0,
-		'1': 1,
-		'2': 2,
-		'3': 3,
-		'4': 4,
-		'5': 5,
-		'6': 6,
-		'7': 7,
-		'8': 8,
-		'9': 9,
-	);
-
-	@for $i from if($minus, 2, 1) through string.length($value) {
-		$character: string.slice($value, $i, $i);
-
-		@if not(index(map.keys($numbers), $character) or $character == '.') {
-			// stylelint-disable
-			$units: (
-				'px': 1px,
-				'cm': 1cm,
-				'mm': 1mm,
-				'%': 1%,
-				'ch': 1ch,
-				'pc': 1pc,
-				'in': 1in,
-				'em': 1em,
-				'rem': 1rem,
-				'pt': 1pt,
-				'ex': 1ex,
-				'vw': 1vw,
-				'vh': 1vh,
-				'vmin': 1vmin,
-				'vmax': 1vmax,
-				'fr': 1fr,
-			);
-			// stylelint-enable
-
-			@if map.get($units, string.slice($value, $i)) {
-				@return if($minus, -$result, $result) * map.get($units, string.slice($value, $i));
-			} @else {
-				@return if($minus, -$result, $result);
-			}
-		}
-
-		@if $character == '.' {
-			$digits: 1;
-		} @else if $digits == 0 {
-			$result: $result * 10 + map.get($numbers, $character);
-		} @else {
-			$digits: $digits * 10;
-			$result: $result + math.div(map.get($numbers, $character), $digits);
-		}
-	}
-
-	@return if($minus, -$result, $result);
-}
-
-///
 /// Sort an array by value.
 ///
 /// @param {array} $array - Array to sort.
@@ -213,7 +140,7 @@
 		@for $j from $i * -1 through -1 {
 			$j: math.abs($j);
 
-			@if ($j > 1 and number(list.nth($values, $j)) < number(list.nth($values, $j - 1))) {
+			@if ($j > 1 and conversion.number(list.nth($values, $j)) < conversion.number(list.nth($values, $j - 1))) {
 				$keys: swap($keys, $j, $j - 1);
 				$values: swap($values, $j, $j - 1);
 			}
@@ -232,6 +159,16 @@
 	}
 
 	@return $sorted-array;
+}
+
+///
+///
+@function increased-sine-value($size, $factor: 1, $maximum: 500) {
+    $size: conversion.number(conversion.strip-unit($size));
+	$normalized-size: math.div($size,301) * $maximum;
+	$curve-value: math.sin((math.div($normalized-size,$maximum)) * (math.div(math.$pi,2)));
+	$adjusted-factor: 1 + ($factor - 1) * $curve-value;
+	@return round($size * $adjusted-factor);
 }
 
 ///

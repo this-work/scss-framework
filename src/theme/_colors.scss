@@ -63,42 +63,42 @@ $color-base: () !default;
 $color-derivates: () !default;
 
 ///
-/// Prefix oh the theme variation class.
+/// Prefix of the theme mode class.
 ///
 /// @type string
 /// @file colors.scss
 ///
-$theme-variations-class-prefix: 'theme-' !default;
+$color-mode-class-prefix: 'color-mode-' !default;
 
 ///
-/// CSS custom properties theme-variations map prefix.
-/// All variations will be prefixed with given string.
+/// CSS custom properties color-mode map prefix.
+/// All mode propertys will be prefixed with given string.
 ///
 /// @type string
 /// @file colors.scss
 ///
-$theme-variations-property-prefix: 'theme-variations-' !default;
+$color-mode-property-prefix: 'color-mode-property-' !default;
 
 ///
-/// Default theme variation. The variable determines the default
+/// Default mode. The variable determines the default
 /// css attributes per palette. Can be disabled with false.
 ///
 /// @type string|boolean
 /// @file colors.scss
 ///
-$theme-variations-default: false !default;
+$color-mode-default: false !default;
 
 ///
-/// Associate theme variations array.
-/// Includes a object with a palette name which includes the theme variations with the corresponding style
+/// Associate theme mode array.
+/// Includes a object with palette names which includes the mode name with the corresponding style
 /// changes. Optionally, instead of the value of the style attribute, it is possible to open another array for
 /// optional pseudo classes.
 ///
 /// @type array
 /// @file colors.scss
 ///
-/// @example scss - Set a copytext theme variation for light, medium and dark and da complexer link theme variation
-///  $theme-variations: (
+/// @example scss - Set a copytext color mode palette for light, medium and dark and a complexer link color mode palette
+///  $color-palettes: (
 ///     'copytext': (
 ///         light: (
 ///             color: 'black'
@@ -123,7 +123,7 @@ $theme-variations-default: false !default;
 ///     )
 ///  );
 ///
-$theme-variations: () !default;
+$color-palettes: () !default;
 
 ///
 /// Get the entry from color array as hexcode
@@ -158,17 +158,17 @@ $theme-variations: () !default;
 /// @example scss
 /// include css-custom-property-color-attribute();
 ///
-@mixin css-custom-property-color-attribute($palette, $attribute, $value) {
+@mixin -css-custom-property-color-attribute($palette, $attribute, $value) {
 	@if type-of($value) == color or type-of($value) == list or type-of($value) == string {
-		#{$attribute}: var(--#{$theme-variations-property-prefix}#{$palette}-#{$attribute});
+		#{$attribute}: var(--#{$color-mode-property-prefix}#{$palette}-#{$attribute});
 	} @else {
 		@each $pseudo, $color in $value {
 			@if $pseudo == 'default' {
-				#{$attribute}: var(--#{$theme-variations-property-prefix}#{$palette}-#{$attribute});
+				#{$attribute}: var(--#{$color-mode-property-prefix}#{$palette}-#{$attribute});
 			} @else {
 				&#{$pseudo} {
 					#{$attribute}: var(
-						--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}-#{utils.string-replace($pseudo, ':', '')}
+						--#{$color-mode-property-prefix}#{$palette}-#{$attribute}-#{utils.string-replace($pseudo, ':', '')}
 					);
 				}
 			}
@@ -182,45 +182,54 @@ $theme-variations: () !default;
 /// @param {string} $palette - Name of the palette of the attribute
 /// @param {string} $attribute - CSS attribute for the constant naming
 /// @param {string|array} $value - Value of the attribute. Can be a array too, see color-variations array.
+/// @param {bool} $default - Indicator if this is a default declaration
 ///
 /// @file colors.scss
 ///
 /// @example scss
-/// include css-custom-property-color-declaration();
+/// include -css-custom-property-color-declaration();
 ///
-@mixin css-custom-property-color-declaration($palette, $attribute, $value) {
+@mixin -css-custom-property-color-declaration($palette, $attribute, $value) {
 	// stylelint-disable
 	@if type-of($value) == color or type-of($value) == list {
-		--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{$value};
+		@include -css-custom-property-color-declaration-type($palette, $attribute, $value);
 	} @else if type-of($value) == string {
 		@if string.index($value, 'gradient') {
-			--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{$value};
+			@include -css-custom-property-color-declaration-type($palette, $attribute, $value);
 		} @else {
-			--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{color($value)};
+			@include -css-custom-property-color-declaration-type($palette, $attribute, color($value));
 		}
 	} @else {
 		@each $pseudo, $color in $value {
 			@if $pseudo == 'default' {
 				@if type-of($color) == string {
 					@if string.index($color, 'gradient') {
-						--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{$color};
+						@include -css-custom-property-color-declaration-type($palette, $attribute, $color);
 					} @else {
-						--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{color($color)};
+						@include -css-custom-property-color-declaration-type($palette, $attribute, color($color));
 					}
 				} @else {
-					--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}: #{$color};
+					@include -css-custom-property-color-declaration-type($palette, $attribute, $color);
 				}
 			} @else {
 				@if type-of($color) == string {
 					@if string.index($color, 'gradient') {
-						--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}-#{utils.string-replace($pseudo, ":", "")}: #{$color};
+						@include -css-custom-property-color-declaration-type(
+							$palette,
+							$attribute + '-' + $pseudo,
+							$color,
+							$default
+						);
 					} @else {
-						--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}-#{utils.string-replace($pseudo, ":", "")}: #{color(
-								$color
-							)};
+						@include -css-custom-property-color-declaration-type(
+							$palette,
+							$attribute + '-' + $pseudo,
+							color($color),
+							$default
+						);
 					}
 				} @else {
-					--#{$theme-variations-property-prefix}#{$palette}-#{$attribute}-#{utils.string-replace($pseudo, ":", "")}: #{$color};
+					@include -css-custom-property-color-declaration-type($palette, $attribute + '-' + $pseudo, $color);
 				}
 			}
 		}
@@ -229,28 +238,45 @@ $theme-variations: () !default;
 }
 
 ///
-/// Generate from the theme-variations array all attributes from the given palette. All attributes will
+/// Create based on the given default prop a Houdini css custom property
+///
+/// @param {string} $palette - Name of the palette of the attribute
+/// @param {string} $attribute - CSS attribute for the constant naming
+/// @param {string|array} $value - Value of the attribute. Can be a array too, see color-variations array.
+/// @param {bool} $default - Indicator if this is a default declaration
+///
+/// @file colors.scss
+///
+/// @example scss
+/// include -css-custom-property-color-declaration-type();
+///
+@mixin -css-custom-property-color-declaration-type($palette, $attribute, $value) {
+  --#{$color-mode-property-prefix}#{$palette}-#{utils.string-replace($attribute, ":", "")}: #{$value};
+}
+
+///
+/// Generate from the color-palettes array all attributs from the given palette. All attributes will
 /// be are output as css custom properties.
 ///
-/// @param {string} $palette - Color palette name
+/// @param {string} $palette - Color mode palette name
 /// @param {string} $cherrypick [false] - [`optional`] Only the given attribute will be rendered.
-/// @param {array} $theme-variations-map[$theme-variations] - [`optional`] Theme variations array
+/// @param {array} $color-palettes-map[$color-palettess] - [`optional`] Theme variations array
 ///
 /// @file colors.scss
 ///
 /// @example scss - Render all attributes from the copytext palette with matching custom property variables
 /// include color-variation('copytext');
 ///
-@mixin color-variation($palette, $cherrypick: false, $theme-variations-map: $theme-variations) {
-	@if (not map-has-key($theme-variations-map, $palette)) {
-		@error 'Given theme variations map has no palette named "#{$palette}".';
+@mixin color-palette($palette, $cherrypick: false, $color-palettes-map: $color-palettes) {
+	@if (not map-has-key($color-palettes-map, $palette)) {
+		@error 'Given color mode map has no palette named "#{$palette}".';
 	}
 
-	$restructured-theme-variations: ();
-	@each $palette-name, $theme-variations in $theme-variations-map {
-		@each $theme-variation, $attributes in $theme-variations {
-			$restructured-theme-variations: map.deep-merge(
-				$restructured-theme-variations,
+	$restructured-color-palettes: ();
+	@each $palette-name, $color-mode in $color-palettes-map {
+		@each $theme-variation, $attributes in $color-mode {
+			$restructured-color-palettes: map.deep-merge(
+				$restructured-color-palettes,
 				(
 					$palette-name: $attributes,
 				)
@@ -258,30 +284,30 @@ $theme-variations: () !default;
 		}
 	}
 
-	@each $attribute, $value in map-get($restructured-theme-variations, $palette) {
+	@each $attribute, $value in map-get($restructured-color-palettes, $palette) {
 		@if ($attribute == $cherrypick and not ($cherrypick == false)) or ($cherrypick == false) {
-			@include css-custom-property-color-attribute($palette, $attribute, $value);
+			@include -css-custom-property-color-attribute($palette, $attribute, $value);
 		}
 	}
 }
 
 ///
-/// Generate from the theme-variations array all theme-variations with all associated css custom properties
+/// Generate from the color-palettes array all color modes with all associated css custom properties
 ///
-/// @param {array} $theme-variations-map[$theme-variations] - [`optional`] Theme variations array
+/// @param {array} $color-palettes-map[$color-palettes] - [`optional`] Theme variations array
 ///
 /// @file colors.scss
 ///
-/// @example scss - Create all css custom properties theme-variations color attributes
-/// include declare-theme-variations();
+/// @example scss - Create all css custom properties color-mode color attributes
+/// include declare-color-modes();
 ///
-@mixin declare-theme-variations($theme-variations-map: $theme-variations) {
-	$restructured-theme-variations: ();
+@mixin declare-color-modes($color-palettes-map: $color-palettes) {
+	$restructured-color-palettes: ();
 
-	@each $palette-name, $theme-variations in $theme-variations-map {
-		@each $theme-variation, $attributes in $theme-variations {
-			$restructured-theme-variations: map.deep-merge(
-				$restructured-theme-variations,
+	@each $palette-name, $color-mode in $color-palettes-map {
+		@each $theme-variation, $attributes in $color-mode {
+			$restructured-color-palettes: map.deep-merge(
+				$restructured-color-palettes,
 				(
 					$theme-variation: (
 						$palette-name: $attributes,
@@ -291,19 +317,35 @@ $theme-variations: () !default;
 		}
 	}
 
-	@each $theme-variation, $palettes in $restructured-theme-variations {
-		.#{$theme-variations-class-prefix}#{$theme-variation} {
+	///
+	/// Build default declaration
+	@each $mode, $palettes in $restructured-color-palettes {
+		@if ($color-mode-default and $color-mode-default == $mode) {
+		  @include utils.css-custom-properties-wrapper {
 			@each $palette, $attributes in $palettes {
-				@if ($theme-variations-default) {
+				@each $attribute, $value in $attributes {
+					@include -css-custom-property-color-declaration($palette, $attribute, $value);
+				}
+			}
+		  }
+		}
+	}
+
+	///
+	/// Build all founded color modes with the default declaration with class
+	@each $mode, $palettes in $restructured-color-palettes {
+		.#{$color-mode-class-prefix}#{$mode} {
+			@each $palette, $attributes in $palettes {
+				@if ($color-mode-default) {
 					$default-color-variation-palette: map.get(
-						map.get($restructured-theme-variations, $theme-variations-default),
+						map.get($restructured-color-palettes, $color-mode-default),
 						$palette
 					);
 					$attributes: map.deep-merge($default-color-variation-palette, $attributes);
 				}
 
 				@each $attribute, $value in $attributes {
-					@include css-custom-property-color-declaration($palette, $attribute, $value);
+					@include -css-custom-property-color-declaration($palette, $attribute, $value);
 				}
 			}
 		}
@@ -321,11 +363,11 @@ $theme-variations: () !default;
 /// include declare-color-map();
 ///
 @mixin declare-color-map($color-map: map.merge($color-base, $color-derivates)) {
-	@include utils.css-custom-properties-wrapper {
-		@each $color-name, $color-value in $color-map {
-			--#{$color-map-prefix}#{$color-name}: #{$color-value};
-		}
+  @include utils.css-custom-properties-wrapper {
+	@each $color-name, $color-value in $color-map {
+	  --#{$color-map-prefix}#{$color-name}: #{$color-value};
 	}
+  }
 }
 
 ///

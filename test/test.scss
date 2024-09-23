@@ -1,82 +1,83 @@
-@use '../framework' as * with (
-	$default-unit-type: 'relative',
-	$color-base: (
-		'black': #00ff00,
-	),
-	$breakpoint-config: (
-		's': 700px,
-		'xl': 1000px,
-		'xxl': 1600px,
-		'xxxl': 1800px,
-	),
-	$site-area-ratios: (
-		'default': (
-			'viewport': 0,
-			'page': 20px,
-			'content': 1fr,
-		),
-		'xl': (
-			'viewport': 100px,
-			'page': 500px,
-			'content': 1200px,
-		),
-	),
-	$theme-variations-default: 'light',
-	$theme-variations: (
-		'copytext': (
-			light: (
-				color: #00f0ff,
-			),
-			dark: (
-				color: #fff,
-			),
-		),
-		'link': (
-			light: (
-				color: (
-					'default': #00f0ff,
-					':hover': #f0f,
-				),
-			),
-			dark: (
-				color: (
-					'default': #fff,
-					':hover': #f0f,
-				),
-			),
-		),
-		'li': (
-			light: (
-				color: 'black',
-				background: #ff0f00,
-			),
-			dark: (
-				background: #fff,
-			),
-		),
-	)
+@use '../framework' as *;
+
+$color-base: (
+	'black': #0f0,
 );
 
-@include declare-color-map;
-@include declare-theme-variations;
+$breakpoint-config: (
+	's': 700px,
+	'm': 900px,
+	'l': 950px,
+	'xl': 1000px,
+	'xxl': 1600px,
+	'xxxl': 1800px,
+);
 
-body {
-	background: color('black');
-	font-size: unitize(16px);
-}
+$color-mode-default: 'light';
+
+$color-palettes: (
+	'copytext': (
+		light: (
+			color: #00f0ff,
+		),
+		dark: (
+			color: #fff,
+		),
+	),
+	'background': (
+		light: (
+			background: #fff,
+		),
+		dark: (
+			background: #000,
+		),
+	),
+	'link': (
+		light: (
+			color: (
+				'default': #00f0ff,
+				':hover': #f0f,
+			),
+		),
+		dark: (
+			color: (
+				'default': #fff,
+				':hover': #f0f,
+			),
+		),
+	),
+	'li': (
+		light: (
+			color: 'black',
+			background: #ff0f00,
+		),
+		dark: (
+			background: #fff,
+		),
+	),
+);
+
+$default-unit-type: 'absolute';
+
+@include declare-color-map;
+@include declare-color-modes;
 
 p {
-	@include color-variation('copytext');
+	display: block;
+	padding: 15px;
+	color: color('black');
 }
 
-a {
-	@include color-variation('link');
+.link {
+	@include color-palette('link');
 }
 
-li {
-	@include color-variation('li');
+.background {
+	display: block;
+	padding: 15px;
+	@include color-palette('background');
 }
 
-.module {
-	@include site-area-grid;
+.li {
+	@include color-palette('li');
 }

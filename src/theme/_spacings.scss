@@ -16,3 +16,107 @@
 @use 'sass:string';
 
 @use './../core' as utils;
+@use './../view/breakpoints' as *;
+@use './../view/mediaqueries' as mediaquery;
+
+///
+/// Associate spacing array.
+/// Includes a key/value pair of the spacing to increase the consistency.
+///
+/// @prop {String} name -  Name of the spacing
+/// @prop {Number} value -  Value of the spacing
+///
+/// @type array
+/// @file spacings.scss
+/// @example scss - Set two spacings
+///  $spacing-config (
+///     '2' : 2px,
+///     '6' : 6px
+///  );
+///
+$spacing-config: () !default;
+
+///
+///
+$spacing-factor: () !default;
+
+///
+/// CSS custom properties spacing map prefix.
+/// All spacings will be prefixed with given string.
+///
+/// @type string
+/// @file spacings.scss
+///
+$spacing-map-prefix: 'spacing-' !default;
+
+///
+///
+@function spacing($spacing-name, $spacing-map: $spacing-config) {
+  @if (not map.has-key($spacing-map, $spacing-name)) {
+	@error 'Given spacing map has no spacing named "#{$spacing-name}".';
+  }
+
+  @return var(--#{$spacing-map-prefix}#{$spacing-name});
+}
+
+
+///
+/// XXXXXX
+///
+/// @param {array} $spacing-map ['$spacing-config'] - [`optional`] Custom spacing array
+///
+/// @file spacings.scss
+///
+/// @example scss -
+/// include declare-spacing-map();
+///
+@mixin declare-spacing-map($spacing-map: $spacing-config) {
+  @include utils.css-custom-properties-wrapper {
+	@each $spacing-name, $spacing in $spacing-map {
+	  --#{$spacing-map-prefix}#{$spacing-name}: #{utils.unitize(utils.increased-sine-value($spacing, map.get($spacing-factor, 'default')) + 'px')};
+	}
+  }
+
+  @each $breakpoint, $breakpoint-value in $breakpoint-config {
+	@include mediaquery.above($breakpoint) {
+	  @include utils.css-custom-properties-wrapper {
+		@each $spacing-name, $spacing in $spacing-map {
+		  @if (map.has-key($spacing-factor, $breakpoint)) {
+			--#{$spacing-map-prefix}#{$spacing-name}: #{utils.unitize(utils.increased-sine-value($spacing, map.get($spacing-factor, $breakpoint)) + 'px')};
+		  }
+		}
+	  }
+	}
+  }
+}
+
+///
+/// Generate from the responsive spacing array a bundle of spacing classes
+///
+/// @param {string} $spacing-type [margin] - [`optional`] CSS attribute
+/// @param {string} $direction [top] - [`optional`] Direction of the spacing
+/// @param {array} $spacing-map [$default-responsive-spacing-map] - [`optional`] Responsive spacing array
+///
+@mixin generate-spacing-classes(
+  $spacing-type: 'margin',
+  $direction: 'top',
+  $spacing-map: $spacing-config
+) {
+  @each $spacing-name, $spacing in $spacing-map {
+	.spacing-#{$spacing-type}-#{$direction}-#{$spacing-name} {
+	  #{$spacing-type}-#{$direction}: spacing($spacing-name);
+	}
+  }
+}
+
+///
+///
+@mixin generate-border-radius-classes(
+  $spacing-map: $spacing-config
+) {
+  @each $spacing-name, $spacing in $spacing-map {
+	.border-radius-#{$spacing-name} {
+	  border-radius: spacing($spacing-name);
+	}
+  }
+}

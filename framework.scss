@@ -9,8 +9,24 @@
 
 @forward 'src/core';
 
-@forward 'src/theme';
+@forward 'src/view/utils';
 
-@forward 'src/view';
+@forward 'src/view/breakpoints';
 
-@forward 'src/grid';
+@forward 'src/view/mediaqueries';
+
+@forward 'src/theme/colors';
+
+@forward 'src/theme/spacings';
+
+@forward 'src/theme/typography';
+
+@forward 'src/theme/normalize';
+
+@forward 'src/grid/utils';
+
+@forward 'src/grid/site';
+
+@forward 'src/grid/css-grid';
+
+@forward 'src/grid/flexbox';

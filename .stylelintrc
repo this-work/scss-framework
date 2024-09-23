@@ -5,7 +5,7 @@
     ],
 	"rules": {
 		"no-empty-source": true,
-        "max-nesting-depth": 3,
+        "max-nesting-depth": 4,
 		"at-rule-empty-line-before": null,
         "comment-no-empty": true,
         "property-no-unknown": true,

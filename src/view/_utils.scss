@@ -15,7 +15,8 @@
 @use 'sass:selector';
 @use 'sass:string';
 
-@use './../theme';
+@use './../theme/colors';
+@use './../theme/spacings';
 
 ///
 /// Mixin to style the `placeholder` text of an `input` element.
@@ -92,5 +93,33 @@
 	scrollbar-width: none;
 	&::-webkit-scrollbar {
 		display: none;
+	}
+}
+
+///
+/// Mixin to generate Styles for the RTL direction
+/// Needs for usage a 'dir' attribute on a parent node
+///
+/// @content Styles for only the RTL direction
+///
+/// @file site.scss
+///
+@mixin rtl() {
+	@at-root [dir='rtl'] & {
+		@content;
+	}
+}
+
+///
+/// Mixin to generate Styles for the LTR direction
+/// Works with and without 'dir' attribute
+///
+/// @content Styles for the LTR direction
+///
+/// @file site.scss
+///
+@mixin ltr() {
+	@at-root html:not([dir='rtl']) & {
+		@content;
 	}
 }
