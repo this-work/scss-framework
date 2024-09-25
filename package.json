@@ -20,7 +20,10 @@
 		"frontend",
 		"framework"
 	],
-	"files": [],
+	"files": [
+		"src",
+		"framework.scss"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git@bitbucket.org:this-work/scss-framework.git"
