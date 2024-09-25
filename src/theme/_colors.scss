@@ -407,5 +407,9 @@ $color-palettes: () !default;
 	$class-prefix: 'background-color',
 	$class-separator: '-'
 ) {
-	@include utils.generate-classes($color-map, background-color, $class-prefix, $class-separator);
+  @each $color-name, $color-value in $color-map {
+	.#{$class-prefix}#{$class-separator}#{$color-name} {
+	  background-color: color($color-name);
+	}
+  }
 }
