@@ -1,0 +1,56 @@
+////
+///
+/// Animation functions
+///
+/// @group Theme
+/// @since 2.0.0
+///
+////
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+
+///
+/// Default Open/Close durations. Transitions that close, dismiss, or collapse an element use shorter durations,
+/// as they require less user attention than the user’s next task.
+/// @type number
+///
+$default-animation-duration: 300ms !default;
+$default-animation-duration-short: 200ms !default;
+
+
+///
+/// Default animation eashttps://material.io/design/motion/speed.html#easinging from the material design
+/// @see
+/// @type function|string
+///
+$default-animation-easing: cubic-bezier(0.77,0,0.18,1) !default;
+
+
+///
+/// Generate transition params
+///
+/// @param {string} $property - Name of animated property
+/// @param {number} $duration [$default-animation-duration] - [`optional`] duration of the transition
+/// @param {function|string} $easing [$default-animation-easing] - [`optional`] type of transition easing
+/// @param {number} $delay [0ms] - [`optional`] Delay of the transition
+///
+/// @return {string}  transition params
+///
+/// @example scss - Set a transition of width with the default animation props
+/// transition: transition(width);
+///
+@function transition(
+    $property,
+    $duration: $default-animation-duration,
+    $easing: $default-animation-easing,
+    $delay: 0ms
+) {
+    @return ($property $duration $easing $delay);
+}
