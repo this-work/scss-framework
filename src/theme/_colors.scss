@@ -214,19 +214,9 @@ $color-palettes: () !default;
 			} @else {
 				@if type-of($color) == string {
 					@if string.index($color, 'gradient') {
-						@include -css-custom-property-color-declaration-type(
-							$palette,
-							$attribute + '-' + $pseudo,
-							$color,
-							$default
-						);
+						@include -css-custom-property-color-declaration-type($palette, $attribute + '-' + $pseudo, $color);
 					} @else {
-						@include -css-custom-property-color-declaration-type(
-							$palette,
-							$attribute + '-' + $pseudo,
-							color($color),
-							$default
-						);
+						@include -css-custom-property-color-declaration-type($palette, $attribute + '-' + $pseudo, color($color));
 					}
 				} @else {
 					@include -css-custom-property-color-declaration-type($palette, $attribute + '-' + $pseudo, $color);
@@ -251,7 +241,7 @@ $color-palettes: () !default;
 /// include -css-custom-property-color-declaration-type();
 ///
 @mixin -css-custom-property-color-declaration-type($palette, $attribute, $value) {
-  --#{$color-mode-property-prefix}#{$palette}-#{utils.string-replace($attribute, ":", "")}: #{$value};
+	--#{$color-mode-property-prefix}#{$palette}-#{utils.string-replace($attribute, ":", "")}: #{$value};
 }
 
 ///
@@ -321,13 +311,13 @@ $color-palettes: () !default;
 	/// Build default declaration
 	@each $mode, $palettes in $restructured-color-palettes {
 		@if ($color-mode-default and $color-mode-default == $mode) {
-		  @include utils.css-custom-properties-wrapper {
-			@each $palette, $attributes in $palettes {
-				@each $attribute, $value in $attributes {
-					@include -css-custom-property-color-declaration($palette, $attribute, $value);
+			@include utils.css-custom-properties-wrapper {
+				@each $palette, $attributes in $palettes {
+					@each $attribute, $value in $attributes {
+						@include -css-custom-property-color-declaration($palette, $attribute, $value);
+					}
 				}
 			}
-		  }
 		}
 	}
 
@@ -363,11 +353,11 @@ $color-palettes: () !default;
 /// include declare-color-map();
 ///
 @mixin declare-color-map($color-map: map.merge($color-base, $color-derivates)) {
-  @include utils.css-custom-properties-wrapper {
-	@each $color-name, $color-value in $color-map {
-	  --#{$color-map-prefix}#{$color-name}: #{$color-value};
+	@include utils.css-custom-properties-wrapper {
+		@each $color-name, $color-value in $color-map {
+			--#{$color-map-prefix}#{$color-name}: #{$color-value};
+		}
 	}
-  }
 }
 
 ///
@@ -407,9 +397,9 @@ $color-palettes: () !default;
 	$class-prefix: 'background-color',
 	$class-separator: '-'
 ) {
-  @each $color-name, $color-value in $color-map {
-	.#{$class-prefix}#{$class-separator}#{$color-name} {
-	  background-color: color($color-name);
+	@each $color-name, $color-value in $color-map {
+		.#{$class-prefix}#{$class-separator}#{$color-name} {
+			background-color: color($color-name);
+		}
 	}
-  }
 }

@@ -262,6 +262,92 @@ $font-weights: (
 }
 
 ///
+/// Generate all font-face declarations from the fonts config
+///
+/// @param {array} $font-config-map [$default-font-config-map] - [`optional`] Font config array
+///
+@mixin generate-font-face-declaration(
+  $font-config-map: $font-config
+) {
+
+  @if ($font-config-map and length($font-config-map) > 0) {
+
+	@each $font-name, $font-map in $font-config-map {
+
+	  @if map-has-key($font-map, "faces") {
+
+		$faces: map-get($font-map, "faces");
+
+		@if type-of($faces) == map {
+		  $faces: append((), ($faces));
+		}
+
+		@each $font-face in $faces {
+
+		  @if map-has-key($font-face, "paths") {
+
+			$sources: ();
+
+			@each $path in map-get($font-face, "paths") {
+
+			  $pathChunks: utils.string-split($path, '.');
+
+			  $format: to-lower-case(nth(utils.string-split($path, '.'), length($pathChunks)));
+
+			  @if ($format == "ttf") {
+
+				$format: "truetype";
+
+			  }
+
+			  $sources: append($sources, (url('#{$path}') format('#{$format}')), 'comma');
+
+			}
+
+			$font-style: normal;
+
+			@if (map-has-key($font-face, 'style')) {
+
+			  $font-style: map-get($font-face, 'style');
+
+			}
+
+			$font-weight: font-weight(map-get($font-face, 'weight'));
+
+
+			$font-display: auto;
+
+			@if (map-has-key($font-face, 'display')) {
+
+			  $font-display: map-get($font-face, 'display');
+
+			}
+
+			@at-root {
+
+			  @font-face {
+				font-family: #{$font-name};
+				src: $sources;
+				font-style: $font-style;
+				font-weight: $font-weight;
+				font-display: $font-display;
+			  }
+
+			}
+
+		  }
+
+		}
+
+	  }
+
+	}
+
+  }
+
+}
+
+///
 /// Generate all typography classes from the responsive font config
 ///
 /// @param {string} $prefix ['is-typo-'] - [`optional`] Font class prefix
