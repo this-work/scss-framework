@@ -1,15 +1,24 @@
 pipelines:
-    default:
-        - step:
-              name: 'Linting Code'
-              image: node:16
-              script:
-                  - npm install
-                  - npm run documentation-build
-                  - npm run linting
-              artifacts:
-                  - documentation/**
-                  - src/**
+  default:
+    - step:
+        name: Sync GitHub Mirror
+        image: alpine/git:latest
+        clone:
+          enabled: false
+        script:
+          - git clone --bare git@bitbucket.org:this-work/scss-framework.git
+          - cd dokumentation.git
+          - git push --mirror git@github.com:this-work/scss-framework.git
+    - step:
+          name: 'Linting Code'
+          image: node:16
+          script:
+              - npm install
+              - npm run documentation-build
+              - npm run linting
+          artifacts:
+              - documentation/**
+              - src/**
 #        - step:
 #              name: 'Commit Code Changes'
 #              image: node:16
