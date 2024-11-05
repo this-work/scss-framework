@@ -7,7 +7,7 @@ pipelines:
           enabled: false
         script:
           - git clone --bare git@bitbucket.org:this-work/scss-framework.git
-          - cd dokumentation.git
+          - cd scss-framework
           - git push --mirror git@github.com:this-work/scss-framework.git
     - step:
           name: 'Linting Code'
