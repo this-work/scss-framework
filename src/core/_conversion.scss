@@ -41,7 +41,7 @@ $default-conversion-context: 16px !default;
 /// @file conversion.scss
 ///
 @function strip-unit($number) {
-	@if meta.type-of($number) == 'number' and not unitless($number) {
+	@if meta.type-of($number) == 'number' and not math.is-unitless($number) {
 		$pseudo-divider: ($number * 0 + 1);
 		@return calc($number / $pseudo-divider);
 	}
@@ -148,7 +148,7 @@ $default-conversion-context: 16px !default;
 	@for $i from if($minus, 2, 1) through string.length($value) {
 		$character: string.slice($value, $i, $i);
 
-		@if not(index(map.keys($numbers), $character) or $character == '.') {
+		@if not(list.index(map.keys($numbers), $character) or $character == '.') {
 			// stylelint-disable
 			$units: (
 				'px': 1px,

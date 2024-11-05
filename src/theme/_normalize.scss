@@ -161,10 +161,7 @@ $default-normalize-word-break: break-word !default;
 /// Prevent `sub` and `sup` elements from affecting the line height in all browsers.
 ///
 @mixin normalize-text-semantics($normalize-bold-weight: $default-normalize-bold-weight) {
-	@if (function-exists(font-weight) and meta.type-of($normalize-bold-weight) == string) {
-		$normalize-bold-weight: font-weight($normalize-bold-weight);
-	}
-
+	$normalize-bold-weight: font-weight($normalize-bold-weight);
 	pre,
 	code,
 	kbd,
@@ -414,11 +411,7 @@ $default-normalize-word-break: break-word !default;
 /// **display** Remove the browser clear button in webkit browser.
 ///
 @mixin normalize-ui($normalize-font-dimension: $default-font-dimension) {
-	$normalize-line-height: 1.45;
-
-	@if (function-exists(line-height) and $normalize-font-dimension) {
-		$normalize-line-height: line-height($normalize-font-dimension);
-	}
+	$normalize-line-height: line-height($normalize-font-dimension);
 
 	button,
 	input,

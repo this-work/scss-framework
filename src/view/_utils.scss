@@ -51,13 +51,8 @@
 ///
 @mixin selection($color-foreground-name, $color-background-name) {
 	::selection {
-		@if (function-exists(color)) {
-			background: color($color-background-name);
-			color: color($color-foreground-name);
-		} @else {
-			background: $color-background-name;
-			color: $color-foreground-name;
-		}
+		background: color($color-background-name);
+		color: color($color-foreground-name);
 		opacity: 1;
 	}
 }
