@@ -1,14 +1,15 @@
-# This - SCSS Framework
-The SCSS framework is a flat simple sass toolbox to make frontend programming easier. All components are optional. 
-Only the core component are always required.
+# THIS - SCSS Framework
+The framework is a toolbox of sass declarations and functions to harmonise the coding. The toolbox contains 
+only empty declarations and must be filled or set via a superordinate framework, e.g. the THIS Onion Framework.
 
 
 #### Requirements
-- Sass >= 1.77.8
+- [Dart Sass](https://github.com/sass) >= 1.80.6
+- Recommend: THIS Onion Framework
 
 #### Install
 
-Install via node
+Install the framework via node and NPM in your project.
 
 ```bash
 npm install @this/scss-framework --save-dev
@@ -16,13 +17,13 @@ npm install @this/scss-framework --save-dev
 
 #### Using
 
-Include in your scss with:
+To use the framework inlcude the main framework.scss with a @use import in every document you want to use it.
 
-```bash
-@import '../node_modules/@this/scss-framework/import';
+```css
+@use '@/node_modules/scss-framework/framework' as *;
 ```
 
 
 #### Develop Requirements
-- Sass >= 1.77.8
+- [Dart Sass](https://github.com/sass) >= 1.80.6
 - [NodeJS 20](https://nodejs.org/en/)
