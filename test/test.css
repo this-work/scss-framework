@@ -1,38 +1,16 @@
-@property --color-black {
-  syntax: "<color>";
-  inherits: false;
-  initial-value: #0f0;
+:root {
+  --color-black: #0f0;
 }
-@property --color-mode-property-copytext-color {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #00f0ff;
+
+:root {
+  --color-mode-property-copytext-color: #00f0ff;
+  --color-mode-property-background-background: #fff;
+  --color-mode-property-link-color: #00f0ff;
+  --color-mode-property-link-color-hover: #f0f;
+  --color-mode-property-li-color: var(--color-black);
+  --color-mode-property-li-background: #ff0f00;
 }
-@property --color-mode-property-background-background {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #fff;
-}
-@property --color-mode-property-link-color {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #00f0ff;
-}
-@property --color-mode-property-link-color-hover {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #f0f;
-}
-@property --color-mode-property-li-color {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: var(--color-black);
-}
-@property --color-mode-property-li-background {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #ff0f00;
-}
+
 .color-mode-light {
   --color-mode-property-copytext-color: #00f0ff;
   --color-mode-property-background-background: #fff;

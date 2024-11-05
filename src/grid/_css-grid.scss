@@ -14,3 +14,58 @@
 @use 'sass:meta';
 @use 'sass:selector';
 @use 'sass:string';
+
+@use './../core' as utils;
+@use './../theme/spacings' as spacings;
+@use './../view/breakpoints' as *;
+@use './../view/mediaqueries' as mediaquery;
+
+///
+/// @type number
+///
+$grid-columns: 1 !default;
+
+///
+/// @type boolean
+///
+$grid-margin: true !default;
+
+///
+/// @type array
+///
+$grid-gaps: () !default;
+
+///
+///
+@mixin grid($subgrid: false) {
+	display: grid;
+	grid-auto-flow: row;
+	@if ($subgrid) {
+		grid-template-columns: subgrid;
+	} @else if ($grid-margin) {
+		grid-template-columns: 0 repeat($grid-columns, minmax(1px, 1fr)) 0;
+	} @else {
+		grid-template-columns: repeat($grid-columns, minmax(1px, 1fr));
+	}
+	@each $breakpoint, $grid-gap in $grid-gaps {
+		@include mediaquery.above($breakpoint) {
+			@if (meta.type-of($grid-gap) == string) {
+				grid-column-gap: spacings.spacing($grid-gap);
+			} @else {
+				grid-column-gap: utils.unitize($grid-gap);
+			}
+		}
+	}
+}
+
+@mixin grid-column-start($start) {
+	@if ($grid-margin) {
+		grid-column-start: #{calc($start + 1)};
+	} @else {
+		grid-column-start: $start;
+	}
+}
+
+@mixin grid-column-width($width) {
+	grid-column-end: span $width;
+}

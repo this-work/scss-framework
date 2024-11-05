@@ -25,7 +25,7 @@
 /// Alias for js import: 'defaultNormalizeBoldWeight'
 /// @type string|number
 ///
-$default-normalize-bold-weight: 'bold'!default;
+$default-normalize-bold-weight: 'bold' !default;
 
 ///
 /// Default font dimension for project
@@ -38,7 +38,7 @@ $default-font-dimension: '' !default;
 /// Alias for js import: 'defaultFontFamily'
 /// @type string
 ///
-$default-font-family: 'Arial'!default;
+$default-font-family: 'Arial' !default;
 
 ///
 ///
@@ -57,14 +57,17 @@ $font-style-map-prefix: 'font-style-' !default;
 $font-dimensions: () !default;
 
 ///
+/// @type array
 ///
 $font-styles: () !default;
 
 ///
+/// @type array
 ///
 $font-factor: () !default;
 
 ///
+/// @type array
 ///
 $font-config: () !default;
 
@@ -80,185 +83,190 @@ $font-config: () !default;
 ///   );
 ///
 $font-weights: (
-		'extralight' : 100,
-		'light'      : 200,
-		'book'       : 300,
-		'regular'    : 400,
-		'medium'     : 500,
-		'semibold'   : 600,
-		'bold'       : 700,
-		'black'      : 800,
-		'extrablack' : 900,
+	'extralight': 100,
+	'light': 200,
+	'book': 300,
+	'regular': 400,
+	'medium': 500,
+	'semibold': 600,
+	'bold': 700,
+	'black': 800,
+	'extrablack': 900,
 ) !default;
 
 ///
 ///
 @function font-size($font-dimension, $font-dimensions-map: $font-dimensions) {
-  @if (not map.has-key($font-dimensions-map, $font-dimension)) {
-	@error 'Given font dimension has no dimension named "#{$font-dimension}".';
-  }
-  @return var(--#{$font-size-map-prefix}#{$font-dimension});
-}
-
-///
-///
-@function letter-spacing( $font-dimension, $font-dimensions-map: $font-dimensions) {
-  $letter-spacing: 0;
-
-  @if (type-of($font-dimension) == string) {
-	@if (not map-has-key($font-dimensions-map, $font-dimension)) {
-	  @error 'Given font dimensions has no dimension named "#{$font-dimension}".';
+	@if (not map.has-key($font-dimensions-map, $font-dimension)) {
+		@error 'Given font dimension has no dimension named "#{$font-dimension}".';
 	}
-	@if (map-has-key(map-get($font-dimensions-map, $font-dimension), "letter-spacing")) {
-	  $letter-spacing: map-get(map-get($font-dimensions-map, $font-dimension), "letter-spacing");
-	}
-  } @else {
-	$letter-spacing: $font-dimension;
-  }
-
-  @if (math.unit($letter-spacing) == "%") {
-	$letter-spacing: math.div(utils.strip-unit($letter-spacing), 100) * 1em;
-  } @else {
-	$letter-spacing: utils.unitize($letter-spacing);
-  }
-  @return $letter-spacing;
+	@return var(--#{$font-size-map-prefix}#{$font-dimension});
 }
 
 ///
 ///
-@function line-height( $font-dimension, $font-dimensions-map: $font-dimensions) {
-  @if (not map-has-key($font-dimensions-map, $font-dimension)) {
-	@error 'Given font dimensions has no dimension named "#{$font-dimension}".';
-  }
-  $font-line-height: map-get(map-get($font-dimensions-map, $font-dimension), "line-height");
-  @if (math.unit($font-line-height) == "px") {
-	$font-line-height: math.div(utils.strip-unit($font-line-height), utils.strip-unit(map.get(map-get($font-dimensions-map, $font-dimension), 'size')));
-  }
-  @return $font-line-height;
-}
+@function letter-spacing($font-dimension, $font-dimensions-map: $font-dimensions) {
+	$letter-spacing: 0;
 
-///
-///
-@function font-family( $font-name, $font-config-map: $font-config) {
-  @if (not map-has-key($font-config-map, $font-name)) {
-	@error 'Given font config has no font named "#{$font-name}".';
-  }
-  @return #{$font-name}, #{map-get(map-get($font-config-map, $font-name), "alternate-stack")};
-}
-
-///
-///
-@function font-weight( $weight, $font-weights-map: $font-weights ) {
-  $font-weight: false;
-  @if (not map-has-key($font-weights-map, $weight)) {
-	@if (not list.index(map-values($font-weights-map), $weight)) {
-	  @error 'Given font weight mapping has no weight "#{$weight}".';
+	@if (meta.type-of($font-dimension) == string) {
+		@if (not map.has-key($font-dimensions-map, $font-dimension)) {
+			@error 'Given font dimensions has no dimension named "#{$font-dimension}".';
+		}
+		@if (map.has-key(map.get($font-dimensions-map, $font-dimension), 'letter-spacing')) {
+			$letter-spacing: map.get(map.get($font-dimensions-map, $font-dimension), 'letter-spacing');
+		}
 	} @else {
-	  $font-weight: $weight;
+		$letter-spacing: $font-dimension;
 	}
 
-  } @else {
-	$font-weight: map-get($font-weights-map, $weight);
-  }
-  @return $font-weight;
+	@if (math.unit($letter-spacing) == '%') {
+		$letter-spacing: math.div(utils.strip-unit($letter-spacing), 100) * 1em;
+	} @else {
+		$letter-spacing: utils.unitize($letter-spacing);
+	}
+	@return $letter-spacing;
+}
+
+///
+///
+@function line-height($font-dimension, $font-dimensions-map: $font-dimensions) {
+	@if (not map.has-key($font-dimensions-map, $font-dimension)) {
+		@error 'Given font dimensions has no dimension named "#{$font-dimension}".';
+	}
+	$font-line-height: map.get(map.get($font-dimensions-map, $font-dimension), 'line-height');
+	@if (math.unit($font-line-height) == 'px') {
+		$font-line-height: math.div(
+			utils.strip-unit($font-line-height),
+			utils.strip-unit(map.get(map.get($font-dimensions-map, $font-dimension), 'size'))
+		);
+	}
+	@return $font-line-height;
+}
+
+///
+///
+@function font-family($font-name, $font-config-map: $font-config) {
+	@if (not map.has-key($font-config-map, $font-name)) {
+		@error 'Given font config has no font named "#{$font-name}".';
+	}
+	@return #{$font-name}, #{map.get(map.get($font-config-map, $font-name), 'alternate-stack')};
+}
+
+///
+///
+@function font-weight($weight, $font-weights-map: $font-weights) {
+	$font-weight: false;
+	@if (not map.has-key($font-weights-map, $weight)) {
+		@if (not list.index(map-values($font-weights-map), $weight)) {
+			@error 'Given font weight mapping has no weight "#{$weight}".';
+		} @else {
+			$font-weight: $weight;
+		}
+	} @else {
+		$font-weight: map.get($font-weights-map, $weight);
+	}
+	@return $font-weight;
 }
 
 ///
 ///
 @function font(
-  $font-style,
-  $font-family-overwrite: false,
-  $font-weight-overwrite: false,
-  $line-height-overwrite: false,
-  $font-styles-map: $font-styles,
-  $font-dimensions-map: $font-dimensions
-){
+	$font-style,
+	$font-family-overwrite: false,
+	$font-weight-overwrite: false,
+	$line-height-overwrite: false,
+	$font-styles-map: $font-styles,
+	$font-dimensions-map: $font-dimensions
+) {
+	$font-style-definition: map.get($font-styles, $font-style);
 
-  $font-style-definition: map.get($font-styles, $font-style);
+	$font-familiy: font-family(list.nth($font-style-definition, 1));
+	@if ($font-family-overwrite) {
+		$font-familiy: font-family($font-family-overwrite);
+	}
 
-  $font-familiy: font-family(list.nth($font-style-definition, 1));
-  @if ($font-family-overwrite) {
-	$font-familiy: font-family($font-family-overwrite);
-  }
+	$font-weight: font-weight(list.nth($font-style-definition, 2));
+	@if ($font-weight-overwrite) {
+		$font-weight: font-weight($font-weight-overwrite);
+	}
 
-  $font-weight: font-weight(list.nth($font-style-definition, 2));
-  @if ($font-weight-overwrite) {
-	$font-weight: font-weight($font-weight-overwrite);
-  }
+	$line-height: line-height(list.nth($font-style-definition, 3));
+	@if (list.length($font-style-definition) >= 4) {
+		$line-height: utils.unitize(list.nth($font-style-definition, 4));
+	}
+	@if ($line-height-overwrite) {
+		$line-height: utils.unitize($line-height-overwrite);
+	}
 
-  $line-height: line-height(list.nth($font-style-definition, 3));
-  @if (list.length($font-style-definition) >= 4) {
-	$line-height: utils.unitize(list.nth($font-style-definition, 4));
-  }
-  @if ($line-height-overwrite) {
-	$line-height: utils.unitize($line-height-overwrite);
-  }
-
-  @return $font-weight font-size(list.nth($font-style-definition, 3))/#{$line-height} $font-familiy;
+	@return $font-weight font-size(list.nth($font-style-definition, 3)) /#{$line-height} $font-familiy;
 }
 
 ///
 ///
 @mixin font-style(
-  	$font-style,
+	$font-style,
 	$font-family-overwrite: false,
-    $font-weight-overwrite: false,
-    $line-height-overwrite: false,
-    $letter-spacing-overwrite: false,
-    $font-styles-map: $font-styles
-){
-  @if (not map.has-key($font-styles, $font-style)) {
-	@error 'Given font styles has no style named "#{$font-style}".';
-  }
-  $font-style-definition: map.get($font-styles, $font-style);
+	$font-weight-overwrite: false,
+	$line-height-overwrite: false,
+	$letter-spacing-overwrite: false,
+	$font-styles-map: $font-styles
+) {
+	@if (not map.has-key($font-styles, $font-style)) {
+		@error 'Given font styles has no style named "#{$font-style}".';
+	}
+	$font-style-definition: map.get($font-styles, $font-style);
 
-  $letter-spacing: false;
-  @if (list.length($font-style-definition) >= 5) {
-	$letter-spacing: letter-spacing(list.nth($font-style-definition, 5));
-  }
-  @if ($letter-spacing-overwrite) {
-	$letter-spacing: utils.unitize($letter-spacing-overwrite);
-  }
+	$letter-spacing: false;
+	@if (list.length($font-style-definition) >= 5) {
+		$letter-spacing: letter-spacing(list.nth($font-style-definition, 5));
+	}
+	@if ($letter-spacing-overwrite) {
+		$letter-spacing: utils.unitize($letter-spacing-overwrite);
+	}
 
-  @if (	$font-family-overwrite or $font-weight-overwrite or $line-height-overwrite) {
-	font: font($font-style, $font-family-overwrite, $font-weight-overwrite, $line-height-overwrite);
-  } @else {
-	font: var(--#{$font-style-map-prefix}#{$font-style});
-  }
-  @if ($letter-spacing) {
-	letter-spacing: $letter-spacing;
-  }
+	@if ($font-family-overwrite or $font-weight-overwrite or $line-height-overwrite) {
+		font: font($font-style, $font-family-overwrite, $font-weight-overwrite, $line-height-overwrite);
+	} @else {
+		font: var(--#{$font-style-map-prefix}#{$font-style});
+	}
+	@if ($letter-spacing) {
+		letter-spacing: $letter-spacing;
+	}
 }
 
 ///
 ///
 @mixin declare-font-style-map($font-styles-map: $font-styles) {
-  @include utils.css-custom-properties-wrapper {
-	@each $font-styles-name, $font-style in $font-styles-map {
-	  --#{$font-style-map-prefix}#{$font-styles-name}: #{font($font-styles-name)};
+	@include utils.css-custom-properties-wrapper {
+		@each $font-styles-name, $font-style in $font-styles-map {
+			--#{$font-style-map-prefix}#{$font-styles-name}: #{font($font-styles-name)};
+		}
 	}
-  }
 }
 
 ///
 ///
 @mixin declare-font-size-map($font-dimensions-map: $font-dimensions) {
-  @include utils.css-custom-properties-wrapper {
-	@each $font-dimension-name, $font-dimension in $font-dimensions-map {
-	  --#{$font-size-map-prefix}#{$font-dimension-name}: #{utils.unitize(utils.increased-sine-value(map.get($font-dimension, 'size'), map.get($font-factor, 'default')) + 'px')};
-	}
-  }
-  @each $breakpoint, $breakpoint-value in $breakpoint-config {
-	@include mediaquery.above($breakpoint) {
-	  @include utils.css-custom-properties-wrapper {
+	@include utils.css-custom-properties-wrapper {
 		@each $font-dimension-name, $font-dimension in $font-dimensions-map {
-		  @if (map.has-key($font-factor, $breakpoint)) {
-			--#{$font-size-map-prefix}#{$font-dimension-name}: #{utils.unitize(utils.increased-sine-value(map.get($font-dimension, 'size'), map.get($font-factor, $breakpoint)) + 'px')};
-		  }
+			--#{$font-size-map-prefix}#{$font-dimension-name}: #{utils.unitize(
+					utils.increased-sine-value(map.get($font-dimension, 'size'), map.get($font-factor, 'default')) + 'px'
+				)};
 		}
-	  }
 	}
-  }
+	@each $breakpoint, $breakpoint-value in $breakpoint-config {
+		@include mediaquery.above($breakpoint) {
+			@include utils.css-custom-properties-wrapper {
+				@each $font-dimension-name, $font-dimension in $font-dimensions-map {
+					@if (map.has-key($font-factor, $breakpoint)) {
+						--#{$font-size-map-prefix}#{$font-dimension-name}: #{utils.unitize(
+								utils.increased-sine-value(map.get($font-dimension, 'size'), map.get($font-factor, $breakpoint)) + 'px'
+							)};
+					}
+				}
+			}
+		}
+	}
 }
 
 ///
@@ -266,85 +274,66 @@ $font-weights: (
 ///
 /// @param {array} $font-config-map [$default-font-config-map] - [`optional`] Font config array
 ///
-@mixin generate-font-face-declaration(
-  $font-config-map: $font-config
-) {
+@mixin generate-font-face-declaration($font-config-map: $font-config) {
+	@if ($font-config-map and list.length($font-config-map) > 0) {
+		@each $font-name, $font-map in $font-config-map {
+			@if map.has-key($font-map, 'faces') {
+				$faces: map.get($font-map, 'faces');
 
-  @if ($font-config-map and length($font-config-map) > 0) {
+				@if meta.type-of($faces) == map {
+					$faces: list.append((), ($faces));
+				}
 
-	@each $font-name, $font-map in $font-config-map {
+				@each $font-face in $faces {
+					@include -generate-single-font-face-declaration($font-name, $font-face);
+				}
+			}
+		}
+	}
+}
 
-	  @if map-has-key($font-map, "faces") {
+///
+///
+@mixin -generate-single-font-face-declaration($font-name, $font-face) {
+	@if map.has-key($font-face, 'paths') {
+		$sources: ();
 
-		$faces: map-get($font-map, "faces");
+		@each $path in map.get($font-face, 'paths') {
+			$path-chunks: utils.string-split($path, '.');
 
-		@if type-of($faces) == map {
-		  $faces: append((), ($faces));
+			$format: string.to-lower-case(list.nth(utils.string-split($path, '.'), list.length($path-chunks)));
+
+			@if ($format == 'ttf') {
+				$format: 'truetype';
+			}
+
+			$sources: list.append($sources, (url('#{$path}') format('#{$format}')), 'comma');
 		}
 
-		@each $font-face in $faces {
+		$font-style: normal;
 
-		  @if map-has-key($font-face, "paths") {
+		@if (map.has-key($font-face, 'style')) {
+			$font-style: map.get($font-face, 'style');
+		}
 
-			$sources: ();
+		$font-weight: font-weight(map.get($font-face, 'weight'));
 
-			@each $path in map-get($font-face, "paths") {
+		$font-display: auto;
 
-			  $pathChunks: utils.string-split($path, '.');
+		@if (map.has-key($font-face, 'display')) {
+			$font-display: map.get($font-face, 'display');
+		}
 
-			  $format: to-lower-case(nth(utils.string-split($path, '.'), length($pathChunks)));
-
-			  @if ($format == "ttf") {
-
-				$format: "truetype";
-
-			  }
-
-			  $sources: append($sources, (url('#{$path}') format('#{$format}')), 'comma');
-
-			}
-
-			$font-style: normal;
-
-			@if (map-has-key($font-face, 'style')) {
-
-			  $font-style: map-get($font-face, 'style');
-
-			}
-
-			$font-weight: font-weight(map-get($font-face, 'weight'));
-
-
-			$font-display: auto;
-
-			@if (map-has-key($font-face, 'display')) {
-
-			  $font-display: map-get($font-face, 'display');
-
-			}
-
-			@at-root {
-
-			  @font-face {
+		@at-root {
+			@font-face {
 				font-family: #{$font-name};
-				src: $sources;
 				font-style: $font-style;
 				font-weight: $font-weight;
 				font-display: $font-display;
-			  }
-
+				src: $sources;
 			}
-
-		  }
-
 		}
-
-	  }
-
 	}
-
-  }
-
 }
 
 ///
@@ -352,13 +341,10 @@ $font-weights: (
 ///
 /// @param {string} $prefix ['is-typo-'] - [`optional`] Font class prefix
 ///
-@mixin generate-typography-classes(
-  $prefix: 'is-typo-'
-) {
-  @each $key, $value in $font-styles {
-	.#{$prefix}#{$key} {
-	  @include font-style($key);
+@mixin generate-typography-classes($prefix: 'is-typo-') {
+	@each $key, $value in $font-styles {
+		.#{$prefix}#{$key} {
+			@include font-style($key);
+		}
 	}
-  }
 }
-

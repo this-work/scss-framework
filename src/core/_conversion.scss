@@ -41,7 +41,7 @@ $default-conversion-context: 16px !default;
 /// @file conversion.scss
 ///
 @function strip-unit($number) {
-	@if type-of($number) == 'number' and not unitless($number) {
+	@if meta.type-of($number) == 'number' and not unitless($number) {
 		$pseudo-divider: ($number * 0 + 1);
 		@return calc($number / $pseudo-divider);
 	}
@@ -100,15 +100,15 @@ $default-conversion-context: 16px !default;
 @function unitize($value, $unit-type: $default-unit-type) {
 	$value: number(#{$value});
 
-	@if ($unit-type == 'relative' and unit($value) == 'px') {
+	@if ($unit-type == 'relative' and math.unit($value) == 'px') {
 		$value: rem($value);
 	}
 
-	@if ($unit-type == 'absolute' and unit($value) == 'rem') {
+	@if ($unit-type == 'absolute' and math.unit($value) == 'rem') {
 		$value: px($value);
 	}
 
-	@if ($unit-type == 'absolute' and unit($value) == 'em') {
+	@if ($unit-type == 'absolute' and math.unit($value) == 'em') {
 		$value: px($value);
 	}
 
@@ -124,68 +124,68 @@ $default-conversion-context: 16px !default;
 /// @file conversion.scss
 ///
 @function number($value) {
-  @if type-of($value) == 'number' {
-	@return $value;
-  }
-
-  $result: 0;
-  $digits: 0;
-  $minus: string.slice($value, 1, 1) == '-';
-
-  $numbers: (
-		  '0': 0,
-		  '1': 1,
-		  '2': 2,
-		  '3': 3,
-		  '4': 4,
-		  '5': 5,
-		  '6': 6,
-		  '7': 7,
-		  '8': 8,
-		  '9': 9,
-  );
-
-  @for $i from if($minus, 2, 1) through string.length($value) {
-	$character: string.slice($value, $i, $i);
-
-	@if not(index(map.keys($numbers), $character) or $character == '.') {
-	  // stylelint-disable
-	  $units: (
-			  'px': 1px,
-			  'cm': 1cm,
-			  'mm': 1mm,
-			  '%': 1%,
-			  'ch': 1ch,
-			  'pc': 1pc,
-			  'in': 1in,
-			  'em': 1em,
-			  'rem': 1rem,
-			  'pt': 1pt,
-			  'ex': 1ex,
-			  'vw': 1vw,
-			  'vh': 1vh,
-			  'vmin': 1vmin,
-			  'vmax': 1vmax,
-			  'fr': 1fr,
-	  );
-	  // stylelint-enable
-
-	  @if map.get($units, string.slice($value, $i)) {
-		@return if($minus, -$result, $result) * map.get($units, string.slice($value, $i));
-	  } @else {
-		@return if($minus, -$result, $result);
-	  }
+	@if meta.type-of($value) == 'number' {
+		@return $value;
 	}
 
-	@if $character == '.' {
-	  $digits: 1;
-	} @else if $digits == 0 {
-	  $result: $result * 10 + map.get($numbers, $character);
-	} @else {
-	  $digits: $digits * 10;
-	  $result: $result + math.div(map.get($numbers, $character), $digits);
-	}
-  }
+	$result: 0;
+	$digits: 0;
+	$minus: string.slice($value, 1, 1) == '-';
 
-  @return if($minus, -$result, $result);
+	$numbers: (
+		'0': 0,
+		'1': 1,
+		'2': 2,
+		'3': 3,
+		'4': 4,
+		'5': 5,
+		'6': 6,
+		'7': 7,
+		'8': 8,
+		'9': 9,
+	);
+
+	@for $i from if($minus, 2, 1) through string.length($value) {
+		$character: string.slice($value, $i, $i);
+
+		@if not(index(map.keys($numbers), $character) or $character == '.') {
+			// stylelint-disable
+			$units: (
+				'px': 1px,
+				'cm': 1cm,
+				'mm': 1mm,
+				'%': 1%,
+				'ch': 1ch,
+				'pc': 1pc,
+				'in': 1in,
+				'em': 1em,
+				'rem': 1rem,
+				'pt': 1pt,
+				'ex': 1ex,
+				'vw': 1vw,
+				'vh': 1vh,
+				'vmin': 1vmin,
+				'vmax': 1vmax,
+				'fr': 1fr,
+			);
+			// stylelint-enable
+
+			@if map.get($units, string.slice($value, $i)) {
+				@return if($minus, -$result, $result) * map.get($units, string.slice($value, $i));
+			} @else {
+				@return if($minus, -$result, $result);
+			}
+		}
+
+		@if $character == '.' {
+			$digits: 1;
+		} @else if $digits == 0 {
+			$result: $result * 10 + map.get($numbers, $character);
+		} @else {
+			$digits: $digits * 10;
+			$result: $result + math.div(map.get($numbers, $character), $digits);
+		}
+	}
+
+	@return if($minus, -$result, $result);
 }

@@ -11,19 +11,10 @@ pipelines:
           - git push --mirror git@github.com:this-work/scss-framework.git
     - step:
           name: 'Linting Code'
-          image: node:16
+          image: node:20
           script:
               - npm install
-              - npm run documentation-build
               - npm run linting
           artifacts:
               - documentation/**
               - src/**
-#        - step:
-#              name: 'Commit Code Changes'
-#              image: node:16
-#              script:
-#                  - git remote set-url origin https://${APP_SECRET_USER}:${APP_SECRET}@bitbucket.org/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}
-#                  - git add -A
-#                  - git commit -m "[skip ci] Updating Documentation & Autofixed Linted Code"
-#                  - git push

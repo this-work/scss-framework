@@ -56,8 +56,8 @@ $color-base: () !default;
 ///
 /// @example scss - Declare two colors
 ///  $color-derivates (
-///     'color-1:alpha' : rgba(map-get($color-base,'color-1'), .75),
-///     'color-2:alpha' : rgba(map-get($color-base,'color-2'), .5),
+///     'color-1:alpha' : rgba(map.get($color-base,'color-1'), .75),
+///     'color-2:alpha' : rgba(map.get($color-base,'color-2'), .5),
 ///  );
 ///
 $color-derivates: () !default;
@@ -159,7 +159,7 @@ $color-palettes: () !default;
 /// include css-custom-property-color-attribute();
 ///
 @mixin -css-custom-property-color-attribute($palette, $attribute, $value) {
-	@if type-of($value) == color or type-of($value) == list or type-of($value) == string {
+	@if meta.type-of($value) == color or meta.type-of($value) == list or meta.type-of($value) == string {
 		#{$attribute}: var(--#{$color-mode-property-prefix}#{$palette}-#{$attribute});
 	} @else {
 		@each $pseudo, $color in $value {
@@ -191,9 +191,9 @@ $color-palettes: () !default;
 ///
 @mixin -css-custom-property-color-declaration($palette, $attribute, $value) {
 	// stylelint-disable
-	@if type-of($value) == color or type-of($value) == list {
+	@if meta.type-of($value) == color or meta.type-of($value) == list {
 		@include -css-custom-property-color-declaration-type($palette, $attribute, $value);
-	} @else if type-of($value) == string {
+	} @else if meta.type-of($value) == string {
 		@if string.index($value, 'gradient') {
 			@include -css-custom-property-color-declaration-type($palette, $attribute, $value);
 		} @else {
@@ -202,7 +202,7 @@ $color-palettes: () !default;
 	} @else {
 		@each $pseudo, $color in $value {
 			@if $pseudo == 'default' {
-				@if type-of($color) == string {
+				@if meta.type-of($color) == string {
 					@if string.index($color, 'gradient') {
 						@include -css-custom-property-color-declaration-type($palette, $attribute, $color);
 					} @else {
@@ -212,7 +212,7 @@ $color-palettes: () !default;
 					@include -css-custom-property-color-declaration-type($palette, $attribute, $color);
 				}
 			} @else {
-				@if type-of($color) == string {
+				@if meta.type-of($color) == string {
 					@if string.index($color, 'gradient') {
 						@include -css-custom-property-color-declaration-type($palette, $attribute + '-' + $pseudo, $color);
 					} @else {
@@ -258,7 +258,7 @@ $color-palettes: () !default;
 /// include color-variation('copytext');
 ///
 @mixin color-palette($palette, $cherrypick: false, $color-palettes-map: $color-palettes) {
-	@if (not map-has-key($color-palettes-map, $palette)) {
+	@if (not map.has-key($color-palettes-map, $palette)) {
 		@error 'Given color mode map has no palette named "#{$palette}".';
 	}
 
@@ -274,7 +274,7 @@ $color-palettes: () !default;
 		}
 	}
 
-	@each $attribute, $value in map-get($restructured-color-palettes, $palette) {
+	@each $attribute, $value in map.get($restructured-color-palettes, $palette) {
 		@if ($attribute == $cherrypick and not ($cherrypick == false)) or ($cherrypick == false) {
 			@include -css-custom-property-color-attribute($palette, $attribute, $value);
 		}

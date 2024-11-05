@@ -6,8 +6,6 @@
 	"description": "THIS SCSS Framework",
 	"private": false,
 	"scripts": {
-		"documentation-build": "sassdoc ./src",
-		"documentation-show": "serve ./documentation --listen 6010",
 		"test": "sass test/test.scss test/test.css --no-source-map",
 		"linting-prettier": "prettier --write ./src",
 		"linting-stylelint": "stylelint \"src/**/*.scss\"",
@@ -32,17 +30,12 @@
 		"url": "https://bitbucket.org/this-work/scss-framework"
 	},
 	"peerDependencies": {
-		"sass": "^1.77.8"
+		"sass": "^1.8.6"
 	},
 	"devDependencies": {
-		"handlebars": "^4.7.7",
 		"prettier": "^2.8.4",
-		"sassdoc": "^2.7.4",
-		"sassdoc-theme-documentation-theme": "file:documentation-theme",
-		"serve": "^14.2.0",
 		"stylelint": "^15.1.0",
 		"stylelint-config-property-sort-order-smacss": "^9.1.0",
-		"stylelint-config-standard-scss": "^7.0.1",
-		"themeleon": "^3.0.2"
+		"stylelint-config-standard-scss": "^7.0.1"
 	}
 }

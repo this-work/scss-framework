@@ -4,7 +4,7 @@ Only the core component are always required.
 
 
 #### Requirements
-- DartSass >= 1.58.1
+- Sass >= 1.77.8
 
 #### Install
 
@@ -24,13 +24,5 @@ Include in your scss with:
 
 
 #### Develop Requirements
-- DartSass >= 1.58.1
-- [NodeJS 16](https://nodejs.org/en/)
-
-#### Documentation
-
-You can simply generate a dokumentation of the framework. The complete Framework includes comments for [SassDoc](http://sassdoc.com/). Install SassDoc globally and execute the following command in the Framework folder via terminal:
-
-```bash
-sassdoc ./
-```
+- Sass >= 1.77.8
+- [NodeJS 20](https://nodejs.org/en/)

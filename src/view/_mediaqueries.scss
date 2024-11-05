@@ -29,7 +29,7 @@
 ///
 ///
 @function -get-decreased-max-value($value) {
-	@if (unit($value) == 'em') or (unit($value) == 'rem') or (unit($value) == '%') {
+	@if (math.unit($value) == 'em') or (math.unit($value) == 'rem') or (math.unit($value) == '%') {
 		@return $value - 0.01;
 	}
 	@return $value - 1;
@@ -61,11 +61,11 @@
 				$min: list.nth($breakpoints, $i);
 				$max: list.nth($breakpoints, $i + 1);
 
-				@if (type-of($min) == string) {
+				@if (meta.type-of($min) == string) {
 					$min: breakpoints.get-breakpoint($min);
 				}
 
-				@if (type-of($max) == string) {
+				@if (meta.type-of($max) == string) {
 					$max: breakpoints.get-breakpoint($max);
 				}
 
@@ -80,7 +80,7 @@
 		}
 	} @else {
 		@each $breakpoint in $breakpoints {
-			@if (type-of($breakpoint) == string) {
+			@if (meta.type-of($breakpoint) == string) {
 				$breakpoint: breakpoints.get-breakpoint($breakpoint);
 			}
 

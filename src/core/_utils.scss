@@ -85,7 +85,7 @@
 	$result: ();
 
 	@each $entry in $list {
-		@if (length($entry) == 1) {
+		@if (list.length($entry) == 1) {
 			$result: list.append($result, $entry);
 		} @else {
 			$flat-entry: flatten($entry);
@@ -136,7 +136,7 @@
 	$keys: map.keys($array);
 	$values: map.values($array);
 
-	@for $i from 1 through length($values) {
+	@for $i from 1 through list.length($values) {
 		@for $j from $i * -1 through -1 {
 			$j: math.abs($j);
 
@@ -149,7 +149,7 @@
 
 	$sorted-array: ();
 
-	@for $k from 1 through length($values) {
+	@for $k from 1 through list.length($values) {
 		$sorted-array: map.merge(
 			$sorted-array,
 			(
@@ -164,9 +164,9 @@
 ///
 ///
 @function increased-sine-value($size, $factor: 1, $maximum: 500) {
-    $size: conversion.number(conversion.strip-unit($size));
-	$normalized-size: math.div($size,301) * $maximum;
-	$curve-value: math.sin((math.div($normalized-size,$maximum)) * (math.div(math.$pi,2)));
+	$size: conversion.number(conversion.strip-unit($size));
+	$normalized-size: math.div($size, 301) * $maximum;
+	$curve-value: math.sin((math.div($normalized-size, $maximum)) * (math.div(math.$pi, 2)));
 	$adjusted-factor: 1 + ($factor - 1) * $curve-value;
 	@return round($size * $adjusted-factor);
 }

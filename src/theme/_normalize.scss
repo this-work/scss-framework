@@ -161,7 +161,7 @@ $default-normalize-word-break: break-word !default;
 /// Prevent `sub` and `sup` elements from affecting the line height in all browsers.
 ///
 @mixin normalize-text-semantics($normalize-bold-weight: $default-normalize-bold-weight) {
-	@if (function-exists(font-weight) and type-of($normalize-bold-weight) == string) {
+	@if (function-exists(font-weight) and meta.type-of($normalize-bold-weight) == string) {
 		$normalize-bold-weight: font-weight($normalize-bold-weight);
 	}
 

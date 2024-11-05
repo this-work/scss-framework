@@ -52,7 +52,7 @@ $breakpoint-config: () !default;
 		// stylelint-disable-next-line
 		$breakpoint: 0px;
 	}
-	@if (type-of($breakpoint) == string) {
+	@if (meta.type-of($breakpoint) == string) {
 		@if (not map.has-key($breakpoint-map, $breakpoint)) {
 			@error 'Given breakpoint map has no breakpoint named "#{$breakpoint}".';
 		}

@@ -15,7 +15,6 @@
 @use 'sass:selector';
 @use 'sass:string';
 
-
 ///
 /// Default Open/Close durations. Transitions that close, dismiss, or collapse an element use shorter durations,
 /// as they require less user attention than the user’s next task.
@@ -24,14 +23,12 @@
 $default-animation-duration: 300ms !default;
 $default-animation-duration-short: 200ms !default;
 
-
 ///
 /// Default animation eashttps://material.io/design/motion/speed.html#easinging from the material design
 /// @see
 /// @type function|string
 ///
-$default-animation-easing: cubic-bezier(0.77,0,0.18,1) !default;
-
+$default-animation-easing: cubic-bezier(0.77, 0, 0.18, 1) !default;
 
 ///
 /// Generate transition params
@@ -47,10 +44,10 @@ $default-animation-easing: cubic-bezier(0.77,0,0.18,1) !default;
 /// transition: transition(width);
 ///
 @function transition(
-    $property,
-    $duration: $default-animation-duration,
-    $easing: $default-animation-easing,
-    $delay: 0ms
+	$property,
+	$duration: $default-animation-duration,
+	$easing: $default-animation-easing,
+	$delay: 0ms
 ) {
-    @return ($property $duration $easing $delay);
+	@return ($property $duration $easing $delay);
 }

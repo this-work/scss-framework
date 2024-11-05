@@ -23,7 +23,7 @@
             }
         ],
         "declaration-no-important": true,
-        "unit-allowed-list": ["px", "rem", "%", "deg", "vw", "vh", "fr", "vmin", "vmax"],
+        "unit-allowed-list": ["px", "rem", "%", "deg", "vw", "vh", "fr", "vmin", "vmax", "s", "ms", "em"],
         "color-no-invalid-hex": true,
         "no-irregular-whitespace": true,
 		"block-no-empty": true,
