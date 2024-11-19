@@ -18,6 +18,15 @@
 @use './../core' as utils;
 
 ///
+/// CSS custom properties breakpoint map prefix.
+/// All breakpoint will be prefixed with given string.
+///
+/// @type string
+/// @file breakpoints.scss
+///
+$breakpoint-map-prefix: 'breakpoint-' !default;
+
+///
 /// Associate breakpoint array.
 /// Includes a key/value pair of the breakpoints
 ///
@@ -100,4 +109,14 @@ $breakpoint-config: () !default;
 	}
 
 	@return $sorted-breakpoint-map;
+}
+
+///
+///
+@mixin declare-breakpoint-map($breakpoint-map: $breakpoint-config) {
+	@include utils.css-custom-properties-wrapper {
+		@each $breakpoint-name, $breakpoint-value in $breakpoint-map {
+			--#{$breakpoint-map-prefix}#{$breakpoint-name}: #{$breakpoint-value};
+		}
+	}
 }
