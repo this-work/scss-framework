@@ -157,7 +157,7 @@ $font-weights: (
 @function font-weight($weight, $font-weights-map: $font-weights) {
 	$font-weight: false;
 	@if (not map.has-key($font-weights-map, $weight)) {
-		@if (not list.index(map-values($font-weights-map), $weight)) {
+		@if (not list.index(map.values($font-weights-map), $weight)) {
 			@error 'Given font weight mapping has no weight "#{$weight}".';
 		} @else {
 			$font-weight: $weight;
@@ -311,15 +311,11 @@ $font-weights: (
 		}
 
 		$font-style: normal;
-
 		@if (map.has-key($font-face, 'style')) {
 			$font-style: map.get($font-face, 'style');
 		}
 
-		$font-weight: font-weight(map.get($font-face, 'weight'));
-
 		$font-display: auto;
-
 		@if (map.has-key($font-face, 'display')) {
 			$font-display: map.get($font-face, 'display');
 		}
@@ -328,7 +324,9 @@ $font-weights: (
 			@font-face {
 				font-family: #{$font-name};
 				font-style: $font-style;
-				font-weight: $font-weight;
+				@if (map.has-key($font-face, 'weight')) {
+					font-weight: font-weight(map.get($font-face, 'weight'));
+				}
 				font-display: $font-display;
 				src: $sources;
 			}
