@@ -250,7 +250,7 @@ $font-weights: (
 	@include utils.css-custom-properties-wrapper {
 		@each $font-dimension-name, $font-dimension in $font-dimensions-map {
 			--#{$font-size-map-prefix}#{$font-dimension-name}: #{utils.unitize(
-					utils.increased-sine-value(map.get($font-dimension, 'size'), map.get($font-factor, 'default')) + 'px'
+					utils.increased-sine-value(map.get($font-dimension, 'size'), map.get($font-factor, 'default'), 110) + 'px'
 				)};
 		}
 	}
@@ -260,7 +260,8 @@ $font-weights: (
 				@each $font-dimension-name, $font-dimension in $font-dimensions-map {
 					@if (map.has-key($font-factor, $breakpoint)) {
 						--#{$font-size-map-prefix}#{$font-dimension-name}: #{utils.unitize(
-								utils.increased-sine-value(map.get($font-dimension, 'size'), map.get($font-factor, $breakpoint)) + 'px'
+								utils.increased-sine-value(map.get($font-dimension, 'size'), map.get($font-factor, $breakpoint), 110) +
+									'px'
 							)};
 					}
 				}
