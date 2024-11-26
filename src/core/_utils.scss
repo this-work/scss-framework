@@ -163,10 +163,10 @@
 
 ///
 ///
-@function increased-sine-value($size, $factor: 1, $maximum: 500) {
+@function increased-sine-value($size, $factor: 1, $maximum: 200) {
 	$size: conversion.number(conversion.strip-unit($size));
-	$normalized-size: math.div($size, 301) * $maximum;
-	$curve-value: math.sin((math.div($normalized-size, $maximum)) * (math.div(math.$pi, 2)));
+	$normalized-size: math.div($size, $maximum);
+	$curve-value: math.sin($normalized-size * (math.div(math.$pi, 2)));
 	$adjusted-factor: 1 + ($factor - 1) * $curve-value;
 	@return round($size * $adjusted-factor);
 }
