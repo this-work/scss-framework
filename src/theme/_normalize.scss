@@ -78,6 +78,7 @@ $default-normalize-word-break: break-word !default;
 		word-break: $normalize-word-break;
 		tab-size: 4;
 		cursor: default;
+		font-synthesis: none;
 
 		// stylelint-disable
 		-webkit-tap-highlight-color: transparent;
