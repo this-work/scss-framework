@@ -107,16 +107,3 @@ $spacing-map-prefix: 'spacing-' !default;
 		}
 	}
 }
-
-///
-///
-@mixin generate-border-radius-classes($spacing-map: $spacing-config) {
-	.border-radius-full {
-		border-radius: 50%;
-	}
-	@each $spacing-name, $spacing in $spacing-map {
-		.border-radius-#{$spacing-name} {
-			border-radius: spacing($spacing-name);
-		}
-	}
-}

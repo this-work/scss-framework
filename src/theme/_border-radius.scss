@@ -1,0 +1,114 @@
+////
+///
+/// Border radius functions
+///
+/// @group Theme
+/// @since 2.0.0
+///
+////
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+@use './../core' as utils;
+@use './../view/breakpoints' as *;
+@use './../view/mediaqueries' as mediaquery;
+
+///
+/// Associate border-radius array.
+/// Includes a key/value pair of the border-radius to increase the consistency.
+///
+/// @prop {String} name -  Name of the border-radius
+/// @prop {Number} value -  Value of the border-radius
+///
+/// @type array
+/// @file border-radius.scss
+/// @example scss - Set two spacings
+///  $border-radius-config (
+///     'xl' : 44px,
+///     'm' : 20px
+///  );
+///
+$border-radius-config: () !default;
+
+///
+///
+///
+$border-radius-factor: () !default;
+
+///
+/// CSS custom properties border-radius map prefix.
+/// All border-radius will be prefixed with given string.
+///
+/// @type string
+/// @file border-radius.scss
+///
+$border-radius-prefix: 'border-radius-' !default;
+
+///
+///
+@function border-radius($border-radius-name, $border-radius-map: $border-radius-config) {
+	@if (not map.has-key($border-radius-map, $border-radius-name)) {
+		@error 'Given border-radius map has no radius named "#{$border-radius-name}".';
+	}
+
+	@return var(--#{$border-radius-prefix}#{$border-radius-name});
+}
+
+///
+/// XXXXXX
+///
+/// @param {array} $border-radius-map ['$border-radius-config'] - [`optional`] Custom border-radius array
+///
+/// @file border-radius.scss
+///
+/// @example scss -
+/// include declare-border-radius-map();
+///
+@mixin declare-border-radius-map($border-radius-map: $border-radius-config) {
+	@include utils.css-custom-properties-wrapper {
+		@each $border-radius-name, $border-radius in $border-radius-map {
+			--#{$border-radius-prefix}#{$border-radius-name}: #{utils.unitize(
+					utils.increased-sine-value($border-radius, map.get($border-radius-factor, 'default')) + 'px'
+				)};
+		}
+	}
+
+	@each $breakpoint, $breakpoint-value in $breakpoint-config {
+		@include mediaquery.above($breakpoint) {
+			@include utils.css-custom-properties-wrapper {
+				@each $border-radius-name, $border-radius in $border-radius-map {
+					@if (
+						map.has-key($border-radius-factor, $breakpoint) and
+							$border-radius-name !=
+							'round' and
+							$border-radius-name !=
+							'none'
+					) {
+						--#{$border-radius-prefix}#{$border-radius-name}: #{utils.unitize(
+								utils.increased-sine-value($border-radius, map.get($border-radius-factor, $breakpoint)) + 'px'
+							)};
+					}
+				}
+			}
+		}
+	}
+}
+
+///
+/// Generate from the responsive border-radius array a bundle of spacing classes
+///
+/// @param {array} $border-radius-map ['$border-radius-config'] - [`optional`] Custom border-radius array
+///
+@mixin generate-border-radius-classes($border-radius-map: $border-radius-config) {
+	@each $border-radius-name, $border-radius in $border-radius-map {
+		.border-radius-#{$border-radius-name} {
+			border-radius: border-radius($border-radius-name);
+		}
+	}
+}
