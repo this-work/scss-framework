@@ -14,3 +14,26 @@
 @use 'sass:meta';
 @use 'sass:selector';
 @use 'sass:string';
+
+@use './../core' as utils;
+@use './../theme/spacings' as spacings;
+@use './../view/breakpoints' as *;
+@use './../view/mediaqueries' as mediaquery;
+@use './css-grid' as *;
+
+///
+///
+@mixin column-width-as-percentage($width: 1, $subgrid-columns: $grid-columns) {
+	@each $breakpoint, $grid-gap in $grid-gaps {
+		@include mediaquery.above($breakpoint) {
+			@if (meta.type-of($grid-gap) == string) {
+				$grid-gap: spacings.spacing($grid-gap);
+			} @else {
+				$grid-gap: utils.unitize($grid-gap);
+			}
+			width: calc(
+				((100% - (($subgrid-columns - 1) * $grid-gap)) / $subgrid-columns * $width) + (($width - 1) * $grid-gap)
+			);
+		}
+	}
+}
