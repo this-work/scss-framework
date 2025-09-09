@@ -69,3 +69,11 @@ $grid-gaps: () !default;
 @mixin grid-column-width($width) {
 	grid-column-end: span $width;
 }
+
+@mixin grid-row-start($start) {
+	grid-row-start: $start;
+}
+
+@mixin grid-row-height($height) {
+	grid-row-end: span $height;
+}
