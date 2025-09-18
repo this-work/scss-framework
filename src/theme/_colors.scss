@@ -168,7 +168,7 @@ $color-palettes: () !default;
 			} @else {
 				&#{$pseudo} {
 					#{$attribute}: var(
-						--#{$color-mode-property-prefix}#{$palette}-#{$attribute}-#{utils.string-replace($pseudo, ':', '')}
+						--#{$color-mode-property-prefix}#{$palette}-#{$attribute}-#{utils.strip-non-alphanumeric($pseudo)}
 					);
 				}
 			}

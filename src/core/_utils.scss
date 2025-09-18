@@ -162,6 +162,12 @@
 }
 
 ///
+/// Increase a value by a given factor on a sine curve
+/// @param {number} $size - Value to increase
+/// @param {number} $factor - Factor to increase the value
+/// @param {number} $maximum - Maximum value
+///
+/// @file utils.scss
 ///
 @function increased-sine-value($size, $factor: 1, $maximum: 301) {
 	$size: conversion.number(conversion.strip-unit($size));
@@ -169,6 +175,45 @@
 	$curve-value: math.sin($normalized-size * (math.div(math.$pi, 2)));
 	$adjusted-factor: 1 + ($factor - 1) * $curve-value;
 	@return round($size * $adjusted-factor);
+}
+
+///
+/// Strip non alphanumeric characters from a string
+///
+/// @param {string} $string - Haystack
+///
+/// @file utils.scss
+///
+@function strip-non-alphanumeric($string) {
+	$non-alphanumeric-map: (
+		'ä': 'a',
+		'ö': 'o',
+		'ü': 'u',
+		'ß': 'ss',
+		'Ä': 'A',
+		'Ö': 'O',
+		'Ü': 'U',
+		' ': '-',
+		'+': '',
+		':': '',
+		'.': '',
+		'#': '',
+		'*': '',
+		'(': '',
+		')': '',
+		'>': '',
+		'<': '',
+		'~': '',
+		',': '',
+		'"': '',
+		'!': '',
+	);
+
+	$result: $string;
+	@each $from, $to in $non-alphanumeric-map {
+		$result: string-replace($string, $from, $to);
+	}
+	@return $result;
 }
 
 ///
