@@ -241,7 +241,7 @@ $color-palettes: () !default;
 /// include -css-custom-property-color-declaration-type();
 ///
 @mixin -css-custom-property-color-declaration-type($palette, $attribute, $value) {
-	--#{$color-mode-property-prefix}#{$palette}-#{utils.string-replace($attribute, ":", "")}: #{$value};
+	--#{$color-mode-property-prefix}#{$palette}-#{utils.strip-non-alphanumeric($attribute)}: #{$value};
 }
 
 ///

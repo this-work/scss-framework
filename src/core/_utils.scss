@@ -32,12 +32,10 @@
 ///
 @function string-replace($string, $search, $replace: '') {
 	$index: string.index($string, $search);
-
 	@if $index {
 		@return string.slice($string, 1, $index - 1) + $replace +
 			string-replace(string.slice($string, $index + string.length($search)), $search, $replace);
 	}
-
 	@return $string;
 }
 
@@ -194,24 +192,23 @@
 		'Ö': 'O',
 		'Ü': 'U',
 		' ': '-',
-		'+': '',
+		'+': 'plus',
 		':': '',
 		'.': '',
 		'#': '',
 		'*': 'any',
 		'(': '',
 		')': '',
-		'>': '',
-		'<': '',
-		'~': '',
+		'>': 'gt',
+		'<': 'lt',
+		'~': 'all',
 		',': '',
 		'"': '',
 		'!': '',
 	);
-
 	$result: $string;
 	@each $from, $to in $non-alphanumeric-map {
-		$result: string-replace($string, $from, $to);
+		$result: string-replace($result, $from, $to);
 	}
 	@return $result;
 }
