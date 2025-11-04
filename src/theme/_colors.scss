@@ -166,10 +166,20 @@ $color-palettes: () !default;
 			@if $pseudo == 'default' {
 				#{$attribute}: var(--#{$color-mode-property-prefix}#{$palette}-#{$attribute});
 			} @else {
-				&#{$pseudo} {
-					#{$attribute}: var(
-						--#{$color-mode-property-prefix}#{$palette}-#{$attribute}-#{utils.strip-non-alphanumeric($pseudo)}
-					);
+				@if $pseudo == ':hover' or $pseudo == '::hover' {
+					@media (hover: hover) {
+						&#{$pseudo} {
+							#{$attribute}: var(
+								--#{$color-mode-property-prefix}#{$palette}-#{$attribute}-#{utils.strip-non-alphanumeric($pseudo)}
+							);
+						}
+					}
+				} @else {
+					&#{$pseudo} {
+						#{$attribute}: var(
+							--#{$color-mode-property-prefix}#{$palette}-#{$attribute}-#{utils.strip-non-alphanumeric($pseudo)}
+						);
+					}
 				}
 			}
 		}
