@@ -1,6 +1,6 @@
 {
 	"name": "@this/scss-framework",
-	"version": "6.1.10",
+	"version": "6.2.0",
 	"author": "THIS GmbH",
 	"homepage": "https://github.com/this-work/scss-framework",
 	"description": "THIS SCSS Framework",
@@ -30,7 +30,7 @@
 		"url": "https://github.com/this-work/scss-framework"
 	},
 	"peerDependencies": {
-		"sass": "^1.80.6"
+		"sass": "latest"
 	},
 	"devDependencies": {
 		"prettier": "^2.8.4",
